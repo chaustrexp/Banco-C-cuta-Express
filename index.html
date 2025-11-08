@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Banco Cúcuta Express - Soluciones financieras digitales con seguridad y confianza. Cuentas, créditos, inversiones y más.">
+    <title>Banco Cúcuta Express - Banca Digital Segura y Confiable</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Intro Screen -->
+    <div id="intro-screen" class="intro-screen">
+        <div class="intro-content">
+            <div class="intro-logo">
+                <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="120" height="120" rx="24" fill="#FF6B35"/>
+                    <path d="M60 30L84 45V75C84 79.9706 79.9706 84 75 84H45C40.0294 84 36 79.9706 36 75V45L60 30Z" fill="#FFFFFF"/>
+                    <circle cx="60" cy="63" r="9" fill="#FF6B35"/>
+                </svg>
+            </div>
+            <h1 class="intro-title">Banco Cúcuta Express</h1>
+            <p class="intro-subtitle">Tu futuro financiero comienza aquí</p>
+            <div class="intro-loader">
+                <div class="loader-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <div class="modal-header">
+                <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="60" height="60" rx="12" fill="#FF6B35"/>
+                    <path d="M30 15L42 22.5V37.5C42 39.9853 39.9853 42 37.5 42H22.5C20.0147 42 18 39.9853 18 37.5V22.5L30 15Z" fill="#FFFFFF"/>
+                    <circle cx="30" cy="31.5" r="4.5" fill="#FF6B35"/>
+                </svg>
+                <h2>Banca en Línea</h2>
+                <p>Ingresa a tu cuenta</p>
+            </div>
+            <form class="login-form">
+                <div class="form-group">
+                    <label>Tipo de documento</label>
+                    <select required>
+                        <option value="">Selecciona</option>
+                        <option value="CC">Cédula de Ciudadanía</option>
+                        <option value="CE">Cédula de Extranjería</option>
+                        <option value="NIT">NIT</option>
+                        <option value="PAS">Pasaporte</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Número de documento</label>
+                    <input type="text" placeholder="Ingresa tu documento" required>
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" placeholder="Ingresa tu contraseña" required>
+                </div>
+                <button type="submit" class="btn-modal-primary">Ingresar</button>
+                <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+            </form>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <div class="modal-header">
+                <div class="modal-icon" id="modal-icon"></div>
+                <h2 id="modal-title">Solicitar Producto</h2>
+                <p id="modal-description">Completa el formulario y nos contactaremos contigo</p>
+            </div>
+            <form class="product-form">
+                <div class="form-group">
+                    <label>Nombre completo</label>
+                    <input type="text" placeholder="Ingresa tu nombre" required>
+                </div>
+                <div class="form-group">
+                    <label>Correo electrónico</label>
+                    <input type="email" placeholder="correo@ejemplo.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Teléfono</label>
+                    <input type="tel" placeholder="300 123 4567" required>
+                </div>
+                <div class="form-group">
+                    <label>Tipo de documento</label>
+                    <select required>
+                        <option value="">Selecciona</option>
+                        <option value="CC">Cédula de Ciudadanía</option>
+                        <option value="CE">Cédula de Extranjería</option>
+                        <option value="PAS">Pasaporte</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Número de documento</label>
+                    <input type="text" placeholder="Ingresa tu documento" required>
+                </div>
+                <div class="form-group">
+                    <label>Mensaje (opcional)</label>
+                    <textarea placeholder="Cuéntanos más sobre tus necesidades" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn-modal-primary">Enviar Solicitud</button>
+            </form>
+        </div>
+    </div>
+
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="40" height="40" rx="8" fill="#FF6B35"/>
+                        <path d="M20 10L28 15V25C28 26.6569 26.6569 28 25 28H15C13.3431 28 12 26.6569 12 25V15L20 10Z" fill="#FFFFFF"/>
+                        <circle cx="20" cy="21" r="3" fill="#FF6B35"/>
+                    </svg>
+                    <span class="logo-text">
+                        <strong>Banco Cúcuta</strong>
+                        <small>Express</small>
+                    </span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#servicios">Servicios</a></li>
+                    <li><a href="#productos">Productos</a></li>
+                    <li><a href="#nosotros">Nosotros</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                    <li><a href="#" class="btn-login">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M8 8a3 3 0 100-6 3 3 0 000 6zm2 2H6a5 5 0 00-5 5v1h12v-1a5 5 0 00-5-5z"/>
+                        </svg>
+                        Ingresar
+                    </a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section id="inicio" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                    </svg>
+                    Banco líder en la región
+                </div>
+                <h1>Banca digital que se adapta a tu vida</h1>
+                <p class="hero-subtitle">Gestiona tus finanzas de forma segura, rápida y desde cualquier lugar. Más de 25 años respaldando tus sueños.</p>
+                <div class="hero-cta">
+                    <a href="#productos" class="btn-primary">
+                        Abrir cuenta gratis
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                    <a href="#servicios" class="btn-secondary-outline">Ver servicios</a>
+                </div>
+                <div class="hero-trust">
+                    <div class="trust-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                        </svg>
+                        <span>100% Seguro</span>
+                    </div>
+                    <div class="trust-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                        <span>Vigilado Superfinanciera</span>
+                    </div>
+                    <div class="trust-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                        </svg>
+                        <span>Soporte 24/7</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="hero-card card-1">
+                    <div class="card-chip"></div>
+                    <div class="card-number">•••• •••• •••• 4829</div>
+                    <div class="card-holder">JUAN PÉREZ</div>
+                </div>
+                <div class="hero-card card-2">
+                    <div class="balance-label">Saldo disponible</div>
+                    <div class="balance-amount">$2,450,000</div>
+                    <div class="balance-trend">+12.5% este mes</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="servicios" class="services">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Servicios</span>
+                <h2 class="section-title">Todo lo que necesitas en un solo lugar</h2>
+                <p class="section-description">Soluciones financieras diseñadas para simplificar tu vida y hacer crecer tu patrimonio</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
+                            <path d="M28 8H4a2 2 0 00-2 2v12a2 2 0 002 2h24a2 2 0 002-2V10a2 2 0 00-2-2zM4 22V10h24v12H4zm4-8h4v4H8v-4z"/>
+                        </svg>
+                    </div>
+                    <h3>Cuentas de Ahorro</h3>
+                    <p>Ahorra con tasas competitivas y sin costos ocultos. Acceso inmediato a tu dinero.</p>
+                    <a href="#" class="service-link">Más información →</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
+                            <path d="M16 2L4 8v8c0 7.33 5.06 14.19 12 16 6.94-1.81 12-8.67 12-16V8L16 2zm0 22c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/>
+                        </svg>
+                    </div>
+                    <h3>Créditos Hipotecarios</h3>
+                    <p>Financia tu vivienda con cuotas flexibles y las mejores tasas del mercado.</p>
+                    <a href="#" class="service-link">Más información →</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
+                            <path d="M26 6H6a2 2 0 00-2 2v16a2 2 0 002 2h20a2 2 0 002-2V8a2 2 0 00-2-2zm0 18H6V8h20v16zM8 12h16v2H8v-2zm0 4h16v2H8v-2zm0 4h10v2H8v-2z"/>
+                        </svg>
+                    </div>
+                    <h3>Créditos Empresariales</h3>
+                    <p>Impulsa tu negocio con capital de trabajo y financiación a medida.</p>
+                    <a href="#" class="service-link">Más información →</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
+                            <path d="M22 2H10a4 4 0 00-4 4v20a4 4 0 004 4h12a4 4 0 004-4V6a4 4 0 00-4-4zm2 24a2 2 0 01-2 2H10a2 2 0 01-2-2V6a2 2 0 012-2h12a2 2 0 012 2v20zm-6-2a2 2 0 100-4 2 2 0 000 4z"/>
+                        </svg>
+                    </div>
+                    <h3>Banca Móvil</h3>
+                    <p>App intuitiva para gestionar tus finanzas desde cualquier lugar, 24/7.</p>
+                    <a href="#" class="service-link">Más información →</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
+                            <path d="M28 16c0 6.627-5.373 12-12 12S4 22.627 4 16 9.373 4 16 4s12 5.373 12 12zm-12-8v8l6 3.5"/>
+                        </svg>
+                    </div>
+                    <h3>Transferencias Inmediatas</h3>
+                    <p>Envía y recibe dinero al instante, sin complicaciones ni demoras.</p>
+                    <a href="#" class="service-link">Más información →</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
+                            <path d="M16 2L2 8v8c0 8.84 6.12 17.09 14 19 7.88-1.91 14-10.16 14-19V8L16 2zm8 14h-6v6h-4v-6H8v-4h6V6h4v6h6v4z"/>
+                        </svg>
+                    </div>
+                    <h3>Inversiones Inteligentes</h3>
+                    <p>Haz crecer tu patrimonio con CDTs, fondos y portafolios personalizados.</p>
+                    <a href="#" class="service-link">Más información →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="productos" class="products">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Productos</span>
+                <h2 class="section-title">Elige el producto perfecto para ti</h2>
+                <p class="section-description">Diseñados para cada etapa de tu vida financiera</p>
+            </div>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-header">
+                        <div class="product-icon">
+                            <svg width="40" height="40" viewBox="0 0 40 40" fill="currentColor">
+                                <rect x="4" y="10" width="32" height="20" rx="3" fill="#3B82F6"/>
+                                <rect x="6" y="14" width="8" height="6" rx="1" fill="#FCD34D"/>
+                            </svg>
+                        </div>
+                        <h3>Tarjeta de Crédito Express</h3>
+                        <p class="product-tagline">Compra hoy, paga después</p>
+                    </div>
+                    <div class="product-benefits">
+                        <div class="benefit-item">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>Sin cuota de manejo el primer año</span>
+                        </div>
+                        <div class="benefit-item">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>Hasta 50 días sin intereses</span>
+                        </div>
+                        <div class="benefit-item">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>Acumula puntos en cada compra</span>
+                        </div>
+                        <div class="benefit-item">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>Seguros de viaje y compras incluidos</span>
+                        </div>
+                    </div>
+                    <a href="#" class="btn-product">Solicitar ahora</a>
+                </div>
+                <div class="product-card featured">
+                    <div class="badge">Más Popular</div>
+                    <div class="product-header">
+                        <div class="product-icon">
+                            <svg width="40" height="40" viewBox="0 0 40 40" fill="currentColor">
+                                <circle cx="20" cy="20" r="16" fill="#FCD34D"/>
+                                <path d="M20 12v8l6 3" stroke="#1E3A8A" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <h3>Cuenta Express Plus</h3>
+                        <p class="product-tagline">Tu cuenta digital sin complicaciones</p>
+                    </div>
+                    <div class="product-benefits">
+                        <div class="benefit-item">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>Apertura 100% digital en minutos</span>
+                        </div>
+                        <div class="benefit-item">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>Tarjeta débito sin costo</span>
+                        </div>
+                        <div class="benefit-item">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>Retiros gratis en toda la red</span>
+                        </div>
+                        <div class="benefit-item">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>Transferencias ilimitadas sin costo</span>
+                        </div>
+                    </div>
+                    <a href="#" class="btn-product">Abrir cuenta gratis</a>
+                </div>
+                <div class="product-card">
+                    <div class="product-header">
+                        <div class="product-icon">
+                            <svg width="40" height="40" viewBox="0 0 40 40" fill="currentColor">
+                                <path d="M20 4L4 12v8c0 10 6.67 19.33 16 22 9.33-2.67 16-12 16-22v-8L20 4z" fill="#10B981"/>
+                                <path d="M20 16v8l6 3.5" stroke="white" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <h3>CDT Express</h3>
+                        <p class="product-tagline">Invierte y gana con seguridad</p>
+                    </div>
+                    <div class="product-benefits">
+                        <div class="benefit-item">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>Tasas hasta 12% E.A.</span>
+                        </div>
+                        <div class="benefit-item">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>Plazos desde 30 días</span>
+                        </div>
+                        <div class="benefit-item">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>Inversión desde $1.000.000</span>
+                        </div>
+                        <div class="benefit-item">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>Renovación automática opcional</span>
+                        </div>
+                    </div>
+                    <a href="#" class="btn-product">Invertir ahora</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="nosotros" class="stats">
+        <div class="container">
+            <div class="section-header light">
+                <span class="section-tag light">Confianza</span>
+                <h2 class="section-title">Respaldados por años de experiencia</h2>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
+                            <path d="M16 2L4 8v8c0 7.33 5.06 14.19 12 16 6.94-1.81 12-8.67 12-16V8L16 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="stat-number" data-target="25">0</h3>
+                    <p>Años de Experiencia</p>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
+                            <path d="M16 4c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12S22.627 4 16 4zm0 18c-3.314 0-6-2.686-6-6s2.686-6 6-6 6 2.686 6 6-2.686 6-6 6z"/>
+                        </svg>
+                    </div>
+                    <h3 class="stat-number" data-target="150000">0</h3>
+                    <p>Clientes Satisfechos</p>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
+                            <path d="M16 2L4 8v6c0 7.33 5.06 14.19 12 16V2zm0 0l12 6v6c0 7.33-5.06 14.19-12 16V2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="stat-number" data-target="45">0</h3>
+                    <p>Sucursales en Colombia</p>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
+                            <rect x="6" y="4" width="20" height="24" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <rect x="10" y="8" width="12" height="8" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3 class="stat-number" data-target="200">0</h3>
+                    <p>Cajeros Automáticos</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="contact">
+        <div class="container">
+            <h2 class="section-title">Contáctanos</h2>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Estamos aquí para ayudarte</h3>
+                    <div class="info-item">
+                        <strong>📞 Línea de Atención:</strong>
+                        <p>018000 123 456</p>
+                    </div>
+                    <div class="info-item">
+                        <strong>📧 Email:</strong>
+                        <p>contacto@bancocucutaexpress.com</p>
+                    </div>
+                    <div class="info-item">
+                        <strong>📍 Oficina Principal:</strong>
+                        <p>Av. Gran Colombia #10-20, Cúcuta, Colombia</p>
+                    </div>
+                    <div class="info-item">
+                        <strong>🕐 Horario:</strong>
+                        <p>Lunes a Viernes: 8:00 AM - 5:00 PM<br>Sábados: 9:00 AM - 1:00 PM</p>
+                    </div>
+                </div>
+                <form class="contact-form">
+                    <input type="text" placeholder="Nombre completo" required>
+                    <input type="email" placeholder="Correo electrónico" required>
+                    <input type="tel" placeholder="Teléfono" required>
+                    <textarea placeholder="Mensaje" rows="5" required></textarea>
+                    <button type="submit" class="btn-primary">Enviar Mensaje</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Banco Cúcuta Express</h4>
+                    <p>Tu banco de confianza desde 1999</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Enlaces Rápidos</h4>
+                    <ul>
+                        <li><a href="#">Términos y Condiciones</a></li>
+                        <li><a href="#">Política de Privacidad</a></li>
+                        <li><a href="#">Preguntas Frecuentes</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Síguenos</h4>
+                    <div class="social-links">
+                        <a href="#">Facebook</a>
+                        <a href="#">Twitter</a>
+                        <a href="#">Instagram</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Banco Cúcuta Express. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- VAPI AI Widget -->
+    <vapi-widget
+        public-key="d4c36367-52d4-4a8a-bd7b-80fafc45fc03"
+        assistant-id="2d6ac14a-4623-4f31-a61f-13cfcf1c15f3"
+        mode="voice"
+        theme="dark"
+        base-bg-color="#000000"
+        accent-color="#14B8A6"
+        cta-button-color="#000000"
+        cta-button-text-color="#ffffff"
+        border-radius="large"
+        size="full"
+        position="bottom-right"
+        title="TALK WITH AI"
+        start-button-text="Start"
+        end-button-text="End Call"
+        chat-first-message="Hey, How can I help you today?"
+        chat-placeholder="Type your message..."
+        voice-show-transcript="true"
+        consent-required="true"
+        consent-title="Terms and conditions"
+        consent-content="By clicking "Agree," and each time I interact with this AI agent, I consent to the recording, storage, and sharing of my communications with third-party service providers, and as otherwise described in our Terms of Service."
+        consent-storage-key="vapi_widget_consent">
+    </vapi-widget>
+    <script src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js" async type="text/javascript"></script>
+
+    <script src="script.js"></script>
+</body>
+</html>
