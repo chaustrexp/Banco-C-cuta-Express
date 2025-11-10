@@ -1,515 +1,1179 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Banco Cúcuta Express - Soluciones financieras digitales con seguridad y confianza. Cuentas, créditos, inversiones y más.">
-    <title>Banco Cúcuta Express - Banca Digital Segura y Confiable</title>
+    <title>Banco Cúcuta Express - Tu banco digital</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Intro Screen -->
-    <div id="intro-screen" class="intro-screen">
+    <!-- Intro Modal - Se muestra solo la primera vez -->
+    <div id="introModal" class="intro-modal">
         <div class="intro-content">
-            <div class="intro-logo">
-                <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="120" height="120" rx="24" fill="#FF6B35"/>
-                    <path d="M60 30L84 45V75C84 79.9706 79.9706 84 75 84H45C40.0294 84 36 79.9706 36 75V45L60 30Z" fill="#FFFFFF"/>
-                    <circle cx="60" cy="63" r="9" fill="#FF6B35"/>
-                </svg>
+            <div class="intro-icon">
+                <i class="fas fa-university"></i>
             </div>
-            <h1 class="intro-title">Banco Cúcuta Express</h1>
-            <p class="intro-subtitle">Tu futuro financiero comienza aquí</p>
-            <div class="intro-loader">
-                <div class="loader-bar"></div>
-            </div>
+            <h1 class="intro-title">Bienvenido al Banco Cúcuta Express</h1>
+            <p class="intro-subtitle">Tu banco digital rápido, seguro y cercano</p>
+            <button id="btnIngresar" class="btn-ingresar">Ingresar al sitio</button>
         </div>
     </div>
 
-    <!-- Login Modal -->
-    <div id="login-modal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close">&times;</span>
-            <div class="modal-header">
-                <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="60" height="60" rx="12" fill="#FF6B35"/>
-                    <path d="M30 15L42 22.5V37.5C42 39.9853 39.9853 42 37.5 42H22.5C20.0147 42 18 39.9853 18 37.5V22.5L30 15Z" fill="#FFFFFF"/>
-                    <circle cx="30" cy="31.5" r="4.5" fill="#FF6B35"/>
-                </svg>
-                <h2>Banca en Línea</h2>
-                <p>Ingresa a tu cuenta</p>
+    <!-- Barra de navegación mejorada -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <div class="brand-icon">
+                    <i class="fas fa-university"></i>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-name">Banco Cúcuta Express</span>
+                    <span class="brand-tagline">Tu banco digital</span>
+                </div>
             </div>
-            <form class="login-form">
-                <div class="form-group">
-                    <label>Tipo de documento</label>
-                    <select required>
-                        <option value="">Selecciona</option>
-                        <option value="CC">Cédula de Ciudadanía</option>
-                        <option value="CE">Cédula de Extranjería</option>
-                        <option value="NIT">NIT</option>
-                        <option value="PAS">Pasaporte</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Número de documento</label>
-                    <input type="text" placeholder="Ingresa tu documento" required>
-                </div>
-                <div class="form-group">
-                    <label>Contraseña</label>
-                    <input type="password" placeholder="Ingresa tu contraseña" required>
-                </div>
-                <button type="submit" class="btn-modal-primary">Ingresar</button>
-                <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
-            </form>
+            
+            <div class="nav-actions">
+                <!-- Botón de tema claro/oscuro -->
+                <button class="theme-toggle" id="themeToggle" aria-label="Cambiar tema">
+                    <i class="fas fa-moon"></i>
+                </button>
+                
+                <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                    <span class="hamburger"></span>
+                    <span class="hamburger"></span>
+                    <span class="hamburger"></span>
+                </button>
+            </div>
+            
+            <ul class="nav-menu" id="navMenu"></ul>
+                <li class="nav-item"><a href="#inicio" class="nav-link">Inicio</a></li>
+                <li class="nav-item"><a href="#productos" class="nav-link">Productos</a></li>
+                <li class="nav-item"><a href="#servicios" class="nav-link">Servicios</a></li>
+                <li class="nav-item"><a href="#apertura" class="nav-link">Apertura de cuenta</a></li>
+                <li class="nav-item"><a href="#sucursales" class="nav-link">Sucursales</a></li>
+                <li class="nav-item"><a href="#contacto" class="nav-link">Contacto</a></li>
+                <li class="nav-item nav-cta">
+                    <button class="btn-nav-cta" id="btnNavAbrirCuenta">
+                        <i class="fas fa-user-plus"></i> Abrir Cuenta
+                    </button>
+                </li>
+            </ul>
         </div>
-    </div>
+    </nav>
 
-    <!-- Product Modal -->
-    <div id="product-modal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close">&times;</span>
-            <div class="modal-header">
-                <div class="modal-icon" id="modal-icon"></div>
-                <h2 id="modal-title">Solicitar Producto</h2>
-                <p id="modal-description">Completa el formulario y nos contactaremos contigo</p>
-            </div>
-            <form class="product-form">
-                <div class="form-group">
-                    <label>Nombre completo</label>
-                    <input type="text" placeholder="Ingresa tu nombre" required>
-                </div>
-                <div class="form-group">
-                    <label>Correo electrónico</label>
-                    <input type="email" placeholder="correo@ejemplo.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Teléfono</label>
-                    <input type="tel" placeholder="300 123 4567" required>
-                </div>
-                <div class="form-group">
-                    <label>Tipo de documento</label>
-                    <select required>
-                        <option value="">Selecciona</option>
-                        <option value="CC">Cédula de Ciudadanía</option>
-                        <option value="CE">Cédula de Extranjería</option>
-                        <option value="PAS">Pasaporte</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Número de documento</label>
-                    <input type="text" placeholder="Ingresa tu documento" required>
-                </div>
-                <div class="form-group">
-                    <label>Mensaje (opcional)</label>
-                    <textarea placeholder="Cuéntanos más sobre tus necesidades" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn-modal-primary">Enviar Solicitud</button>
-            </form>
-        </div>
-    </div>
-
-    <header>
-        <nav class="navbar">
-            <div class="container">
-                <div class="logo">
-                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="40" height="40" rx="8" fill="#FF6B35"/>
-                        <path d="M20 10L28 15V25C28 26.6569 26.6569 28 25 28H15C13.3431 28 12 26.6569 12 25V15L20 10Z" fill="#FFFFFF"/>
-                        <circle cx="20" cy="21" r="3" fill="#FF6B35"/>
-                    </svg>
-                    <span class="logo-text">
-                        <strong>Banco Cúcuta</strong>
-                        <small>Express</small>
-                    </span>
-                </div>
-                <ul class="nav-menu">
-                    <li><a href="#inicio">Inicio</a></li>
-                    <li><a href="#servicios">Servicios</a></li>
-                    <li><a href="#productos">Productos</a></li>
-                    <li><a href="#nosotros">Nosotros</a></li>
-                    <li><a href="#contacto">Contacto</a></li>
-                    <li><a href="#" class="btn-login">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M8 8a3 3 0 100-6 3 3 0 000 6zm2 2H6a5 5 0 00-5 5v1h12v-1a5 5 0 00-5-5z"/>
-                        </svg>
-                        Ingresar
-                    </a></li>
-                </ul>
-                <div class="hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </div>
-        </nav>
-    </header>
-
+    <!-- Banner Hero -->
     <section id="inicio" class="hero">
-        <div class="hero-overlay"></div>
         <div class="container">
             <div class="hero-content">
-                <div class="hero-badge">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                    </svg>
-                    Banco líder en la región
-                </div>
-                <h1>Banca digital que se adapta a tu vida</h1>
-                <p class="hero-subtitle">Gestiona tus finanzas de forma segura, rápida y desde cualquier lugar. Más de 25 años respaldando tus sueños.</p>
-                <div class="hero-cta">
-                    <a href="#productos" class="btn-primary">
-                        Abrir cuenta gratis
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                        </svg>
-                    </a>
-                    <a href="#servicios" class="btn-secondary-outline">Ver servicios</a>
-                </div>
-                <div class="hero-trust">
-                    <div class="trust-item">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
-                        </svg>
-                        <span>100% Seguro</span>
-                    </div>
-                    <div class="trust-item">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                        </svg>
-                        <span>Vigilado Superfinanciera</span>
-                    </div>
-                    <div class="trust-item">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-                        </svg>
-                        <span>Soporte 24/7</span>
-                    </div>
+                <h1>Banco Cúcuta Express</h1>
+                <p class="subtitle">Tu banco digital rápido, seguro y cercano</p>
+                <p class="hero-description">Soluciones financieras digitales diseñadas para ti.</p>
+                <div class="hero-buttons">
+                    <a href="#apertura" class="btn btn-primary">Abrir Cuenta</a>
+                    <a href="#productos" class="btn btn-secondary">Más información</a>
                 </div>
             </div>
             <div class="hero-image">
-                <div class="hero-card card-1">
-                    <div class="card-chip"></div>
-                    <div class="card-number">•••• •••• •••• 4829</div>
-                    <div class="card-holder">JUAN PÉREZ</div>
-                </div>
-                <div class="hero-card card-2">
-                    <div class="balance-label">Saldo disponible</div>
-                    <div class="balance-amount">$2,450,000</div>
-                    <div class="balance-trend">+12.5% este mes</div>
-                </div>
+                <i class="fas fa-mobile-alt"></i>
             </div>
         </div>
     </section>
 
-    <section id="servicios" class="services">
+    <!-- Características del banco -->
+    <section class="features">
         <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Servicios</span>
-                <h2 class="section-title">Todo lo que necesitas en un solo lugar</h2>
-                <p class="section-description">Soluciones financieras diseñadas para simplificar tu vida y hacer crecer tu patrimonio</p>
+            <div class="feature-card">
+                <i class="fas fa-laptop"></i>
+                <h3>100% Digital</h3>
+                <p>Gestiona tus finanzas desde cualquier lugar</p>
             </div>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
-                            <path d="M28 8H4a2 2 0 00-2 2v12a2 2 0 002 2h24a2 2 0 002-2V10a2 2 0 00-2-2zM4 22V10h24v12H4zm4-8h4v4H8v-4z"/>
-                        </svg>
-                    </div>
-                    <h3>Cuentas de Ahorro</h3>
-                    <p>Ahorra con tasas competitivas y sin costos ocultos. Acceso inmediato a tu dinero.</p>
-                    <a href="#" class="service-link">Más información →</a>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
-                            <path d="M16 2L4 8v8c0 7.33 5.06 14.19 12 16 6.94-1.81 12-8.67 12-16V8L16 2zm0 22c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/>
-                        </svg>
-                    </div>
-                    <h3>Créditos Hipotecarios</h3>
-                    <p>Financia tu vivienda con cuotas flexibles y las mejores tasas del mercado.</p>
-                    <a href="#" class="service-link">Más información →</a>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
-                            <path d="M26 6H6a2 2 0 00-2 2v16a2 2 0 002 2h20a2 2 0 002-2V8a2 2 0 00-2-2zm0 18H6V8h20v16zM8 12h16v2H8v-2zm0 4h16v2H8v-2zm0 4h10v2H8v-2z"/>
-                        </svg>
-                    </div>
-                    <h3>Créditos Empresariales</h3>
-                    <p>Impulsa tu negocio con capital de trabajo y financiación a medida.</p>
-                    <a href="#" class="service-link">Más información →</a>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
-                            <path d="M22 2H10a4 4 0 00-4 4v20a4 4 0 004 4h12a4 4 0 004-4V6a4 4 0 00-4-4zm2 24a2 2 0 01-2 2H10a2 2 0 01-2-2V6a2 2 0 012-2h12a2 2 0 012 2v20zm-6-2a2 2 0 100-4 2 2 0 000 4z"/>
-                        </svg>
-                    </div>
-                    <h3>Banca Móvil</h3>
-                    <p>App intuitiva para gestionar tus finanzas desde cualquier lugar, 24/7.</p>
-                    <a href="#" class="service-link">Más información →</a>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
-                            <path d="M28 16c0 6.627-5.373 12-12 12S4 22.627 4 16 9.373 4 16 4s12 5.373 12 12zm-12-8v8l6 3.5"/>
-                        </svg>
-                    </div>
-                    <h3>Transferencias Inmediatas</h3>
-                    <p>Envía y recibe dinero al instante, sin complicaciones ni demoras.</p>
-                    <a href="#" class="service-link">Más información →</a>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
-                            <path d="M16 2L2 8v8c0 8.84 6.12 17.09 14 19 7.88-1.91 14-10.16 14-19V8L16 2zm8 14h-6v6h-4v-6H8v-4h6V6h4v6h6v4z"/>
-                        </svg>
-                    </div>
-                    <h3>Inversiones Inteligentes</h3>
-                    <p>Haz crecer tu patrimonio con CDTs, fondos y portafolios personalizados.</p>
-                    <a href="#" class="service-link">Más información →</a>
-                </div>
+            <div class="feature-card">
+                <i class="fas fa-bolt"></i>
+                <h3>Procesos rápidos</h3>
+                <p>Apertura de cuenta en minutos</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-headset"></i>
+                <h3>Atención 24/7</h3>
+                <p>Soporte disponible siempre que lo necesites</p>
             </div>
         </div>
     </section>
 
+    <!-- Productos Financieros -->
     <section id="productos" class="products">
         <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Productos</span>
-                <h2 class="section-title">Elige el producto perfecto para ti</h2>
-                <p class="section-description">Diseñados para cada etapa de tu vida financiera</p>
-            </div>
+            <h2>Nuestros Productos Financieros</h2>
             <div class="products-grid">
                 <div class="product-card">
-                    <div class="product-header">
-                        <div class="product-icon">
-                            <svg width="40" height="40" viewBox="0 0 40 40" fill="currentColor">
-                                <rect x="4" y="10" width="32" height="20" rx="3" fill="#3B82F6"/>
-                                <rect x="6" y="14" width="8" height="6" rx="1" fill="#FCD34D"/>
-                            </svg>
-                        </div>
-                        <h3>Tarjeta de Crédito Express</h3>
-                        <p class="product-tagline">Compra hoy, paga después</p>
-                    </div>
-                    <div class="product-benefits">
-                        <div class="benefit-item">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            <span>Sin cuota de manejo el primer año</span>
-                        </div>
-                        <div class="benefit-item">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            <span>Hasta 50 días sin intereses</span>
-                        </div>
-                        <div class="benefit-item">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            <span>Acumula puntos en cada compra</span>
-                        </div>
-                        <div class="benefit-item">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            <span>Seguros de viaje y compras incluidos</span>
-                        </div>
-                    </div>
-                    <a href="#" class="btn-product">Solicitar ahora</a>
-                </div>
-                <div class="product-card featured">
-                    <div class="badge">Más Popular</div>
-                    <div class="product-header">
-                        <div class="product-icon">
-                            <svg width="40" height="40" viewBox="0 0 40 40" fill="currentColor">
-                                <circle cx="20" cy="20" r="16" fill="#FCD34D"/>
-                                <path d="M20 12v8l6 3" stroke="#1E3A8A" stroke-width="2" stroke-linecap="round"/>
-                            </svg>
-                        </div>
-                        <h3>Cuenta Express Plus</h3>
-                        <p class="product-tagline">Tu cuenta digital sin complicaciones</p>
-                    </div>
-                    <div class="product-benefits">
-                        <div class="benefit-item">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            <span>Apertura 100% digital en minutos</span>
-                        </div>
-                        <div class="benefit-item">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            <span>Tarjeta débito sin costo</span>
-                        </div>
-                        <div class="benefit-item">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            <span>Retiros gratis en toda la red</span>
-                        </div>
-                        <div class="benefit-item">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            <span>Transferencias ilimitadas sin costo</span>
-                        </div>
-                    </div>
-                    <a href="#" class="btn-product">Abrir cuenta gratis</a>
+                    <i class="fas fa-piggy-bank"></i>
+                    <h3>Cuenta de ahorros</h3>
+                    <p>Ahorra de forma segura con rendimientos competitivos</p>
                 </div>
                 <div class="product-card">
-                    <div class="product-header">
-                        <div class="product-icon">
-                            <svg width="40" height="40" viewBox="0 0 40 40" fill="currentColor">
-                                <path d="M20 4L4 12v8c0 10 6.67 19.33 16 22 9.33-2.67 16-12 16-22v-8L20 4z" fill="#10B981"/>
-                                <path d="M20 16v8l6 3.5" stroke="white" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <h3>CDT Express</h3>
-                        <p class="product-tagline">Invierte y gana con seguridad</p>
-                    </div>
-                    <div class="product-benefits">
-                        <div class="benefit-item">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            <span>Tasas hasta 12% E.A.</span>
-                        </div>
-                        <div class="benefit-item">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            <span>Plazos desde 30 días</span>
-                        </div>
-                        <div class="benefit-item">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            <span>Inversión desde $1.000.000</span>
-                        </div>
-                        <div class="benefit-item">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            <span>Renovación automática opcional</span>
-                        </div>
-                    </div>
-                    <a href="#" class="btn-product">Invertir ahora</a>
+                    <i class="fas fa-seedling"></i>
+                    <h3>Cuenta semilla</h3>
+                    <p>Inicia tu vida financiera sin costos de manejo</p>
+                </div>
+                <div class="product-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>CDT digital</h3>
+                    <p>Invierte a plazo fijo con las mejores tasas</p>
+                </div>
+                <div class="product-card">
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <h3>Préstamos</h3>
+                    <p>Créditos personales con aprobación inmediata</p>
+                </div>
+                <div class="product-card">
+                    <i class="fas fa-credit-card"></i>
+                    <h3>Tarjeta de débito</h3>
+                    <p>Compra y retira efectivo en todo el país</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="nosotros" class="stats">
+    <!-- Alerta Importante del Banco -->
+    <div id="alertaBanco" class="alert-banner">
         <div class="container">
-            <div class="section-header light">
-                <span class="section-tag light">Confianza</span>
-                <h2 class="section-title">Respaldados por años de experiencia</h2>
+            <div class="alert-content">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p><strong>Aviso importante:</strong> Mantenimiento programado el 15 de diciembre de 2024 de 2:00 AM a 4:00 AM. Los servicios digitales no estarán disponibles durante este periodo.</p>
             </div>
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-icon">
-                        <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
-                            <path d="M16 2L4 8v8c0 7.33 5.06 14.19 12 16 6.94-1.81 12-8.67 12-16V8L16 2z"/>
-                        </svg>
-                    </div>
-                    <h3 class="stat-number" data-target="25">0</h3>
-                    <p>Años de Experiencia</p>
+            <button class="alert-close" id="btnCerrarAlerta">&times;</button>
+        </div>
+    </div>
+
+    <!-- Portal del Cliente / Login -->
+    <section id="login" class="login-section">
+        <div class="container">
+            <div class="login-container">
+                <div class="login-info">
+                    <i class="fas fa-shield-alt"></i>
+                    <h2>Portal del Cliente</h2>
+                    <p>Accede a tu banca en línea de forma segura</p>
+                    <ul class="login-benefits">
+                        <li><i class="fas fa-check-circle"></i> Consulta tus saldos</li>
+                        <li><i class="fas fa-check-circle"></i> Realiza transferencias</li>
+                        <li><i class="fas fa-check-circle"></i> Paga servicios</li>
+                        <li><i class="fas fa-check-circle"></i> Descarga extractos</li>
+                    </ul>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-icon">
-                        <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
-                            <path d="M16 4c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12S22.627 4 16 4zm0 18c-3.314 0-6-2.686-6-6s2.686-6 6-6 6 2.686 6 6-2.686 6-6 6z"/>
-                        </svg>
+                <div class="login-card">
+                    <div class="login-header">
+                        <i class="fas fa-lock"></i>
+                        <h3 id="loginTitle">Iniciar Sesión</h3>
                     </div>
-                    <h3 class="stat-number" data-target="150000">0</h3>
-                    <p>Clientes Satisfechos</p>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-icon">
-                        <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
-                            <path d="M16 2L4 8v6c0 7.33 5.06 14.19 12 16V2zm0 0l12 6v6c0 7.33-5.06 14.19-12 16V2z"/>
-                        </svg>
+                    
+                    <!-- Formulario de Login -->
+                    <form id="loginForm" class="login-form">
+                        <div class="form-group">
+                            <label>Usuario o Documento</label>
+                            <div class="input-icon">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="loginUsuario" placeholder="Ingresa tu usuario" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Contraseña</label>
+                            <div class="input-icon">
+                                <i class="fas fa-key"></i>
+                                <input type="password" id="loginPassword" placeholder="Ingresa tu contraseña" required>
+                                <button type="button" class="toggle-password" id="togglePassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fas fa-sign-in-alt"></i> Ingresar
+                        </button>
+                        <div class="login-links">
+                            <a href="#" class="forgot-password" id="btnOlvidastePassword">¿Olvidaste tu contraseña?</a>
+                            <span class="separator">|</span>
+                            <a href="#apertura" class="create-account">Crear cuenta</a>
+                        </div>
+                    </form>
+                    
+                    <!-- Formulario de Recuperación de Contraseña -->
+                    <form id="recuperarPasswordForm" class="login-form" style="display: none;">
+                        <div class="form-group">
+                            <label>Correo electrónico o Documento</label>
+                            <div class="input-icon">
+                                <i class="fas fa-envelope"></i>
+                                <input type="text" id="recuperarEmail" placeholder="Ingresa tu correo o documento" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fas fa-paper-plane"></i> Enviar código de recuperación
+                        </button>
+                        <div class="login-links">
+                            <a href="#" class="back-to-login" id="btnVolverLogin">Volver al inicio de sesión</a>
+                        </div>
+                    </form>
+                    
+                    <div class="security-warning">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p><strong>Importante:</strong> Nunca compartas tus credenciales con nadie. El banco nunca te solicitará esta información por correo o teléfono.</p>
                     </div>
-                    <h3 class="stat-number" data-target="45">0</h3>
-                    <p>Sucursales en Colombia</p>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-icon">
-                        <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
-                            <rect x="6" y="4" width="20" height="24" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
-                            <rect x="10" y="8" width="12" height="8" fill="currentColor"/>
-                        </svg>
-                    </div>
-                    <h3 class="stat-number" data-target="200">0</h3>
-                    <p>Cajeros Automáticos</p>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Seguridad y Protección al Cliente -->
+    <section id="seguridad" class="security-section">
+        <div class="container">
+            <div class="section-header">
+                <i class="fas fa-shield-alt"></i>
+                <h2>Seguridad y Protección</h2>
+                <p class="section-subtitle">Tu seguridad es nuestra prioridad</p>
+            </div>
+            <div class="security-grid">
+                <div class="security-card highlight">
+                    <i class="fas fa-lock"></i>
+                    <h3>Protege tu información</h3>
+                    <p>Mantén tus datos seguros siguiendo nuestras recomendaciones de seguridad bancaria.</p>
+                </div>
+                <div class="security-card">
+                    <i class="fas fa-user-shield"></i>
+                    <h3>Nunca compartas tus claves</h3>
+                    <p>El banco nunca te solicitará tus contraseñas, códigos OTP o datos de tarjeta por teléfono, correo o redes sociales.</p>
+                </div>
+                <div class="security-card">
+                    <i class="fas fa-envelope-open-text"></i>
+                    <h3>Cuidado con el phishing</h3>
+                    <p>Verifica siempre la URL oficial del banco. No hagas clic en enlaces sospechosos recibidos por correo o SMS.</p>
+                </div>
+                <div class="security-card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>Usa canales oficiales</h3>
+                    <p>Descarga nuestra app solo desde tiendas oficiales y accede a la banca en línea desde nuestro sitio web verificado.</p>
+                </div>
+                <div class="security-card">
+                    <i class="fas fa-bell"></i>
+                    <h3>Activa notificaciones</h3>
+                    <p>Recibe alertas en tiempo real de todas las transacciones realizadas en tus cuentas y tarjetas.</p>
+                </div>
+                <div class="security-card">
+                    <i class="fas fa-phone-alt"></i>
+                    <h3>Reporta actividad sospechosa</h3>
+                    <p>Si detectas movimientos no autorizados, comunícate inmediatamente con nuestra línea de atención 24/7.</p>
+                </div>
+            </div>
+            <div class="security-cta">
+                <button class="btn btn-secondary">
+                    <i class="fas fa-book"></i> Ver más recomendaciones de seguridad
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Servicios -->
+    <section id="servicios" class="services">
+        <div class="container">
+            <h2>Nuestros Servicios</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <i class="fas fa-exchange-alt"></i>
+                    <h3>Transferencias móviles</h3>
+                    <p>Envía dinero al instante desde tu celular</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-wallet"></i>
+                    <h3>Pagos en línea</h3>
+                    <p>Paga servicios y facturas sin salir de casa</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-search-dollar"></i>
+                    <h3>Consulta de saldo</h3>
+                    <p>Revisa tus movimientos en tiempo real</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-user-edit"></i>
+                    <h3>Actualización de datos</h3>
+                    <p>Mantén tu información siempre actualizada</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-user-tie"></i>
+                    <h3>Atención personalizada</h3>
+                    <p>Asesoría financiera adaptada a tus necesidades</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Apertura de cuenta -->
+    <section id="apertura" class="account-opening">
+        <div class="container">
+            <h2>Requisitos para abrir tu cuenta</h2>
+            <p class="section-subtitle">Proceso 100% digital en solo 4 pasos</p>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <i class="fas fa-id-card"></i>
+                    <h3>Documento de identidad</h3>
+                    <p>Cédula de ciudadanía vigente</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <i class="fas fa-phone"></i>
+                    <h3>Número de teléfono</h3>
+                    <p>Celular activo para verificación</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <i class="fas fa-laptop-code"></i>
+                    <h3>Registro en plataforma</h3>
+                    <p>Completa el formulario digital</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <i class="fas fa-signature"></i>
+                    <h3>Firma digital</h3>
+                    <p>Autoriza tu cuenta de forma segura</p>
+                </div>
+            </div>
+            <div class="cta-center">
+                <button id="btnAbrirCuenta" class="btn btn-primary">Iniciar apertura</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de Apertura de Cuenta -->
+    <div id="modalAperturaCuenta" class="modal-apertura">
+        <div class="modal-apertura-content">
+            <button class="modal-close" id="btnCerrarModal">&times;</button>
+            
+            <!-- Indicador de pasos -->
+            <div class="progress-steps">
+                <div class="step active" data-step="1">
+                    <div class="step-circle">1</div>
+                    <span>Datos personales</span>
+                </div>
+                <div class="step" data-step="2">
+                    <div class="step-circle">2</div>
+                    <span>Contacto</span>
+                </div>
+                <div class="step" data-step="3">
+                    <div class="step-circle">3</div>
+                    <span>Tipo de cuenta</span>
+                </div>
+                <div class="step" data-step="4">
+                    <div class="step-circle">4</div>
+                    <span>Confirmación</span>
+                </div>
+            </div>
+
+            <!-- Formulario multi-paso -->
+            <form id="formAperturaCuenta">
+                <!-- Paso 1: Datos personales -->
+                <div class="form-step active" data-step="1">
+                    <h3>Datos Personales</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nombres completos *</label>
+                            <input type="text" id="nombres" name="nombres" required>
+                            <span class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Apellidos completos *</label>
+                            <input type="text" id="apellidos" name="apellidos" required>
+                            <span class="error-message"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Tipo de documento *</label>
+                            <select id="tipoDocumento" name="tipoDocumento" required>
+                                <option value="">Seleccione...</option>
+                                <option value="CC">Cédula de Ciudadanía</option>
+                                <option value="CE">Cédula de Extranjería</option>
+                                <option value="PAS">Pasaporte</option>
+                            </select>
+                            <span class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Número de documento *</label>
+                            <input type="text" id="numeroDocumento" name="numeroDocumento" required>
+                            <span class="error-message"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Fecha de nacimiento *</label>
+                            <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+                            <span class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Género *</label>
+                            <select id="genero" name="genero" required>
+                                <option value="">Seleccione...</option>
+                                <option value="M">Masculino</option>
+                                <option value="F">Femenino</option>
+                                <option value="O">Otro</option>
+                            </select>
+                            <span class="error-message"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paso 2: Contacto -->
+                <div class="form-step" data-step="2">
+                    <h3>Información de Contacto</h3>
+                    <div class="form-group">
+                        <label>Correo electrónico *</label>
+                        <input type="email" id="email" name="email" required>
+                        <span class="error-message"></span>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Teléfono celular *</label>
+                            <input type="tel" id="celular" name="celular" required>
+                            <span class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Teléfono fijo (opcional)</label>
+                            <input type="tel" id="telefonoFijo" name="telefonoFijo">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Dirección de residencia *</label>
+                        <input type="text" id="direccion" name="direccion" required>
+                        <span class="error-message"></span>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Ciudad *</label>
+                            <input type="text" id="ciudad" name="ciudad" required>
+                            <span class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Departamento *</label>
+                            <input type="text" id="departamento" name="departamento" required>
+                            <span class="error-message"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paso 3: Tipo de cuenta -->
+                <div class="form-step" data-step="3">
+                    <h3>Selecciona tu Producto</h3>
+                    <div class="product-selection">
+                        <label class="product-option">
+                            <input type="radio" name="tipoCuenta" value="ahorros" required>
+                            <div class="product-box">
+                                <i class="fas fa-piggy-bank"></i>
+                                <h4>Cuenta de Ahorros</h4>
+                                <p>Ahorra con rendimientos competitivos</p>
+                                <ul>
+                                    <li>✓ Sin cuota de manejo el primer año</li>
+                                    <li>✓ Tarjeta débito gratis</li>
+                                    <li>✓ Transferencias ilimitadas</li>
+                                </ul>
+                            </div>
+                        </label>
+                        <label class="product-option">
+                            <input type="radio" name="tipoCuenta" value="semilla" required>
+                            <div class="product-box">
+                                <i class="fas fa-seedling"></i>
+                                <h4>Cuenta Semilla</h4>
+                                <p>Ideal para iniciar tu vida financiera</p>
+                                <ul>
+                                    <li>✓ Sin cuota de manejo</li>
+                                    <li>✓ Apertura desde $0</li>
+                                    <li>✓ 100% digital</li>
+                                </ul>
+                            </div>
+                        </label>
+                    </div>
+                    <span class="error-message" id="errorTipoCuenta"></span>
+                </div>
+
+                <!-- Paso 4: Confirmación -->
+                <div class="form-step" data-step="4">
+                    <h3>Confirmación de Datos</h3>
+                    <div class="confirmation-box">
+                        <div class="confirmation-section">
+                            <h4><i class="fas fa-user"></i> Datos Personales</h4>
+                            <p><strong>Nombre:</strong> <span id="confirmNombre"></span></p>
+                            <p><strong>Documento:</strong> <span id="confirmDocumento"></span></p>
+                            <p><strong>Fecha de nacimiento:</strong> <span id="confirmFecha"></span></p>
+                        </div>
+                        <div class="confirmation-section">
+                            <h4><i class="fas fa-envelope"></i> Contacto</h4>
+                            <p><strong>Email:</strong> <span id="confirmEmail"></span></p>
+                            <p><strong>Celular:</strong> <span id="confirmCelular"></span></p>
+                            <p><strong>Dirección:</strong> <span id="confirmDireccion"></span></p>
+                        </div>
+                        <div class="confirmation-section">
+                            <h4><i class="fas fa-university"></i> Producto Seleccionado</h4>
+                            <p><strong>Tipo de cuenta:</strong> <span id="confirmCuenta"></span></p>
+                        </div>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="aceptoTerminos" required>
+                            Acepto los <a href="#" target="_blank">términos y condiciones</a> y la <a href="#" target="_blank">política de privacidad</a>
+                        </label>
+                        <span class="error-message"></span>
+                    </div>
+                </div>
+
+                <!-- Botones de navegación -->
+                <div class="form-navigation">
+                    <button type="button" class="btn btn-secondary" id="btnAnterior">Anterior</button>
+                    <button type="button" class="btn btn-primary" id="btnSiguiente">Siguiente</button>
+                    <button type="submit" class="btn btn-primary" id="btnEnviar" style="display: none;">Enviar Solicitud</button>
+                </div>
+            </form>
+
+            <!-- Mensaje de éxito -->
+            <div id="mensajeExito" class="success-message" style="display: none;">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>¡Solicitud Enviada Exitosamente!</h3>
+                <p>Tu solicitud de apertura de cuenta ha sido recibida.</p>
+                <p><strong>Número de solicitud:</strong> <span id="numeroSolicitud"></span></p>
+                <p>Recibirás un correo de confirmación en las próximas 24 horas.</p>
+                <button class="btn btn-primary" id="btnCerrarExito">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sucursales -->
+    <section id="sucursales" class="branches">
+        <div class="container">
+            <h2>Nuestras Sucursales</h2>
+            <div class="branches-grid">
+                <div class="branch-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Sucursal Centro</h3>
+                    <p>Av. Principal #12-45, Centro</p>
+                    <p class="schedule"><i class="far fa-clock"></i> Lun - Vie: 8:00 AM - 5:00 PM</p>
+                    <p class="schedule"><i class="far fa-clock"></i> Sáb: 9:00 AM - 1:00 PM</p>
+                </div>
+                <div class="branch-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Sucursal Norte</h3>
+                    <p>Calle 15 #8-30, Zona Norte</p>
+                    <p class="schedule"><i class="far fa-clock"></i> Lun - Vie: 8:00 AM - 5:00 PM</p>
+                    <p class="schedule"><i class="far fa-clock"></i> Sáb: 9:00 AM - 1:00 PM</p>
+                </div>
+                <div class="branch-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Sucursal Sur</h3>
+                    <p>Carrera 10 #25-18, Zona Sur</p>
+                    <p class="schedule"><i class="far fa-clock"></i> Lun - Vie: 8:00 AM - 5:00 PM</p>
+                    <p class="schedule"><i class="far fa-clock"></i> Sáb: 9:00 AM - 1:00 PM</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Simuladores Financieros -->
+    <section id="simuladores" class="simulators-section">
+        <div class="container">
+            <h2>Simuladores Financieros</h2>
+            <p class="section-subtitle">Calcula y planifica tus finanzas</p>
+            <div class="simulators-grid">
+                <!-- Simulador CDT -->
+                <div class="simulator-card">
+                    <div class="simulator-header">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Simulador de CDT</h3>
+                    </div>
+                    <form class="simulator-form" id="formCDT">
+                        <div class="form-group">
+                            <label>Monto a invertir</label>
+                            <div class="input-currency">
+                                <span>$</span>
+                                <input type="number" id="montoCDT" placeholder="1000000" min="1000000" step="100000" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Plazo (días)</label>
+                            <select id="plazoCDT" required>
+                                <option value="90">90 días - 4.5% EA</option>
+                                <option value="180">180 días - 5.2% EA</option>
+                                <option value="360">360 días - 6.0% EA</option>
+                                <option value="540">540 días - 6.5% EA</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </form>
+                    <div class="simulator-result" id="resultadoCDT" style="display: none;">
+                        <h4>Resultado de tu inversión</h4>
+                        <div class="result-item">
+                            <span>Monto invertido:</span>
+                            <strong id="cdtMonto">$0</strong>
+                        </div>
+                        <div class="result-item">
+                            <span>Intereses ganados:</span>
+                            <strong id="cdtIntereses" class="text-success">$0</strong>
+                        </div>
+                        <div class="result-item total">
+                            <span>Total al vencimiento:</span>
+                            <strong id="cdtTotal">$0</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulador Préstamo -->
+                <div class="simulator-card">
+                    <div class="simulator-header">
+                        <i class="fas fa-hand-holding-usd"></i>
+                        <h3>Simulador de Préstamo</h3>
+                    </div>
+                    <form class="simulator-form" id="formPrestamo">
+                        <div class="form-group">
+                            <label>Valor solicitado</label>
+                            <div class="input-currency">
+                                <span>$</span>
+                                <input type="number" id="montoPrestamo" placeholder="5000000" min="500000" step="100000" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Plazo (meses)</label>
+                            <select id="plazoPrestamo" required>
+                                <option value="12">12 meses</option>
+                                <option value="24">24 meses</option>
+                                <option value="36">36 meses</option>
+                                <option value="48">48 meses</option>
+                                <option value="60">60 meses</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tasa de interés mensual</label>
+                            <input type="number" id="tasaPrestamo" value="1.5" step="0.1" min="0.5" max="5" required>
+                            <small>Tasa promedio: 1.5% mensual</small>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </form>
+                    <div class="simulator-result" id="resultadoPrestamo" style="display: none;">
+                        <h4>Tu cuota mensual sería</h4>
+                        <div class="result-highlight">
+                            <strong id="prestamoQuota">$0</strong>
+                            <span>por mes</span>
+                        </div>
+                        <div class="result-item">
+                            <span>Total a pagar:</span>
+                            <strong id="prestamoTotal">$0</strong>
+                        </div>
+                        <div class="result-item">
+                            <span>Total intereses:</span>
+                            <strong id="prestamoIntereses">$0</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulador Ahorro -->
+                <div class="simulator-card">
+                    <div class="simulator-header">
+                        <i class="fas fa-piggy-bank"></i>
+                        <h3>Simulador de Ahorro</h3>
+                    </div>
+                    <form class="simulator-form" id="formAhorro">
+                        <div class="form-group">
+                            <label>Ahorro mensual</label>
+                            <div class="input-currency">
+                                <span>$</span>
+                                <input type="number" id="montoAhorro" placeholder="200000" min="50000" step="10000" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Plazo (meses)</label>
+                            <select id="plazoAhorro" required>
+                                <option value="6">6 meses</option>
+                                <option value="12">12 meses</option>
+                                <option value="24">24 meses</option>
+                                <option value="36">36 meses</option>
+                                <option value="60">60 meses</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tasa de interés anual</label>
+                            <input type="number" id="tasaAhorro" value="4.5" step="0.1" min="0" max="10" required>
+                            <small>Tasa promedio: 4.5% EA</small>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </form>
+                    <div class="simulator-result" id="resultadoAhorro" style="display: none;">
+                        <h4>Proyección de tu ahorro</h4>
+                        <div class="result-item">
+                            <span>Total ahorrado:</span>
+                            <strong id="ahorroTotal">$0</strong>
+                        </div>
+                        <div class="result-item">
+                            <span>Intereses ganados:</span>
+                            <strong id="ahorroIntereses" class="text-success">$0</strong>
+                        </div>
+                        <div class="result-item total">
+                            <span>Total acumulado:</span>
+                            <strong id="ahorroFinal">$0</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tarifas y Costos -->
+    <section id="tarifas" class="rates-section">
+        <div class="container">
+            <h2>Tarifas, Costos y Tasas</h2>
+            <p class="section-subtitle">Transparencia en todos nuestros productos</p>
+            
+            <div class="rates-table-container">
+                <table class="rates-table">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Costo Mensual</th>
+                            <th>Tasas</th>
+                            <th>Comisiones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Cuenta de Ahorros</strong></td>
+                            <td>$0 primer año<br>$8.000 después</td>
+                            <td>4.5% EA</td>
+                            <td>Sin comisiones</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cuenta Semilla</strong></td>
+                            <td>$0</td>
+                            <td>3.0% EA</td>
+                            <td>Sin comisiones</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CDT Digital</strong></td>
+                            <td>N/A</td>
+                            <td>4.5% - 6.5% EA</td>
+                            <td>Sin comisiones</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Préstamo Personal</strong></td>
+                            <td>N/A</td>
+                            <td>1.5% - 2.5% MV</td>
+                            <td>2% sobre monto</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tarjeta Débito</strong></td>
+                            <td>$0</td>
+                            <td>N/A</td>
+                            <td>$2.500 por retiro en otros bancos</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Transferencias</strong></td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>$0 entre cuentas BCE<br>$3.500 otros bancos</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="rates-download">
+                <div class="download-card">
+                    <i class="fas fa-file-pdf"></i>
+                    <div>
+                        <h4>Descargar Tarifario Completo</h4>
+                        <p>Consulta todas nuestras tarifas y condiciones</p>
+                    </div>
+                    <button class="btn btn-secondary" id="btnDescargarTarifas"></button>
+                        <i class="fas fa-download"></i> Descargar PDF
+                    </button>
+                </div>
+            </div>
+
+            <div class="legal-notice">
+                <i class="fas fa-info-circle"></i>
+                <p><strong>Nota legal:</strong> Las tarifas y tasas aquí presentadas son referenciales y pueden variar según el perfil del cliente y las condiciones del mercado. Para información detallada y actualizada, consulte nuestro tarifario oficial o comuníquese con nuestros asesores. Última actualización: Diciembre 2024.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Preguntas Frecuentes -->
+    <section id="faq" class="faq-section">
+        <div class="container">
+            <h2>Preguntas Frecuentes</h2>
+            <p class="section-subtitle">Resolvemos tus dudas más comunes</p>
+            
+            <div class="faq-container">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Cómo puedo abrir una cuenta en Banco Cúcuta Express?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Abrir una cuenta es muy sencillo y 100% digital. Solo necesitas tu cédula de ciudadanía, un número de celular activo y un correo electrónico. Haz clic en "Abrir Cuenta" en nuestro sitio web, completa el formulario en 4 pasos y en menos de 10 minutos tendrás tu cuenta activa.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Cuáles son los requisitos para solicitar un préstamo?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Para solicitar un préstamo debes ser mayor de 18 años, tener una cuenta activa en nuestro banco, contar con ingresos demostrables y no estar reportado en centrales de riesgo. El monto y la tasa dependerán de tu capacidad de pago y perfil crediticio.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Cómo puedo recuperar mi contraseña?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Si olvidaste tu contraseña, haz clic en "¿Olvidaste tu contraseña?" en la página de inicio de sesión. Te enviaremos un código de verificación a tu correo electrónico o celular registrado. Con ese código podrás crear una nueva contraseña de forma segura.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Tienen costos de manejo las cuentas?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>La Cuenta Semilla no tiene ningún costo de manejo. La Cuenta de Ahorros es gratis el primer año y después tiene un costo de $8.000 mensuales. Puedes evitar este cobro manteniendo un saldo promedio mínimo de $500.000.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Cómo puedo hacer transferencias a otros bancos?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Puedes hacer transferencias desde nuestra app móvil o banca en línea. Solo necesitas el número de cuenta y banco destino. Las transferencias entre cuentas del Banco Cúcuta Express son gratuitas e inmediatas. Las transferencias a otros bancos tienen un costo de $3.500 y se procesan en tiempo real.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Qué hago si detecto un movimiento no autorizado?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Si detectas alguna transacción sospechosa, comunícate inmediatamente con nuestra línea de atención 24/7 al 018000-123456. Bloquearemos tu cuenta temporalmente mientras investigamos el caso. También puedes reportar desde la app móvil en la sección de seguridad.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Puedo tener más de una cuenta?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Sí, puedes tener múltiples cuentas de ahorro y productos con nosotros. Muchos clientes tienen una Cuenta Semilla para gastos diarios y una Cuenta de Ahorros para sus metas financieras. Puedes gestionarlas todas desde la misma app.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Cómo descargo mis extractos bancarios?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Ingresa a tu banca en línea, ve a la sección "Mis Cuentas", selecciona la cuenta deseada y haz clic en "Descargar Extracto". Puedes elegir el periodo que necesites y descargarlo en formato PDF. Los extractos están disponibles de forma gratuita.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿El banco tiene app móvil?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Sí, nuestra app "BCE Móvil" está disponible para iOS y Android. Descárgala desde App Store o Google Play. Con la app puedes consultar saldos, hacer transferencias, pagar servicios, solicitar productos y mucho más, todo desde tu celular de forma segura.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Qué medidas de seguridad tiene el banco?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Utilizamos encriptación de última generación, autenticación de dos factores, notificaciones en tiempo real de todas las transacciones, y monitoreo 24/7 de actividades sospechosas. Además, nunca te solicitaremos tus claves por teléfono, correo o redes sociales.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Educación Financiera / Blog -->
+    <section id="blog" class="blog-section">
+        <div class="container">
+            <h2>Educación Financiera</h2>
+            <p class="section-subtitle">Aprende a manejar mejor tu dinero</p>
+            
+            <div class="blog-grid">
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <div class="blog-content">
+                        <span class="blog-category">Ahorro</span>
+                        <h3>5 estrategias para ahorrar dinero cada mes</h3>
+                        <p>Descubre técnicas efectivas para reducir gastos innecesarios y aumentar tu capacidad de ahorro sin sacrificar tu calidad de vida.</p>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> 10 Dic 2024</span>
+                            <span><i class="far fa-clock"></i> 5 min</span>
+                        </div>
+                        <a href="#" class="blog-link" onclick="abrirModalArticulo('modalArticulo1'); return false;">Leer más <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="blog-content">
+                        <span class="blog-category">Seguridad</span>
+                        <h3>Cómo protegerte del fraude bancario en línea</h3>
+                        <p>Conoce las señales de alerta del phishing y aprende a identificar intentos de fraude para mantener tu dinero seguro en el mundo digital.</p>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> 8 Dic 2024</span>
+                            <span><i class="far fa-clock"></i> 7 min</span>
+                        </div>
+                        <a href="#" class="blog-link" onclick="abrirModalArticulo('modalArticulo2'); return false;">Leer más <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="blog-content">
+                        <span class="blog-category">Inversión</span>
+                        <h3>Guía para principiantes: ¿Qué es un CDT?</h3>
+                        <p>Aprende todo sobre los Certificados de Depósito a Término, cómo funcionan, sus beneficios y cómo pueden ayudarte a hacer crecer tu dinero.</p>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> 5 Dic 2024</span>
+                            <span><i class="far fa-clock"></i> 6 min</span>
+                        </div>
+                        <a href="#" class="blog-link" onclick="abrirModalArticulo('modalArticulo3'); return false;">Leer más <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+            </div>
+
+            <div class="blog-cta">
+                <button class="btn btn-secondary" id="btnVerMasArticulos">
+                    <i class="fas fa-book-open"></i> Ver más artículos
+                </button>
+            </div>
+            
+            <!-- Artículos adicionales (ocultos inicialmente) -->
+            <div id="articulosAdicionales" class="blog-grid" style="display: none; margin-top: 30px;">
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="blog-content">
+                        <span class="blog-category">Finanzas Personales</span>
+                        <h3>Cómo crear un presupuesto familiar efectivo</h3>
+                        <p>Aprende a organizar tus ingresos y gastos familiares para alcanzar tus metas financieras sin estrés.</p>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> 3 Dic 2024</span>
+                            <span><i class="far fa-clock"></i> 6 min</span>
+                        </div>
+                        <a href="#" class="blog-link">Leer más <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div class="blog-content">
+                        <span class="blog-category">Crédito</span>
+                        <h3>Cómo mejorar tu historial crediticio</h3>
+                        <p>Descubre estrategias probadas para aumentar tu puntaje de crédito y acceder a mejores tasas de interés.</p>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> 1 Dic 2024</span>
+                            <span><i class="far fa-clock"></i> 8 min</span>
+                        </div>
+                        <a href="#" class="blog-link">Leer más <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="blog-content">
+                        <span class="blog-category">Inversión</span>
+                        <h3>Diversificación: La clave del éxito financiero</h3>
+                        <p>Entiende por qué no debes poner todos los huevos en la misma canasta y cómo diversificar inteligentemente.</p>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> 28 Nov 2024</span>
+                            <span><i class="far fa-clock"></i> 7 min</span>
+                        </div>
+                        <a href="#" class="blog-link">Leer más <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mapa de Sucursales -->
+    <section id="mapa-sucursales" class="map-section">
+        <div class="container">
+            <h2>Encuéntranos</h2>
+            <p class="section-subtitle">Visita nuestras sucursales en Cúcuta</p>
+            
+            <div class="map-container">
+                <div class="map-info">
+                    <h3>Nuestras Ubicaciones</h3>
+                    <div class="map-locations">
+                        <div class="location-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h4>Sucursal Centro</h4>
+                                <p>Av. Principal #12-45, Centro</p>
+                                <p class="location-hours">Lun - Vie: 8:00 AM - 5:00 PM</p>
+                            </div>
+                        </div>
+                        <div class="location-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h4>Sucursal Norte</h4>
+                                <p>Calle 15 #8-30, Zona Norte</p>
+                                <p class="location-hours">Lun - Vie: 8:00 AM - 5:00 PM</p>
+                            </div>
+                        </div>
+                        <div class="location-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h4>Sucursal Sur</h4>
+                                <p>Carrera 10 #25-18, Zona Sur</p>
+                                <p class="location-hours">Lun - Vie: 8:00 AM - 5:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="btnComoLlegar">´p</button>
+                        <i class="fas fa-directions"></i> Cómo llegar
+                    </button>
+                </div>
+                <div class="map-frame">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15838.234567890123!2d-72.5047!3d7.8939!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwNTMnMzguMCJOIDcywrAzMCcxNy4wIlc!5e0!3m2!1ses!2sco!4v1234567890123!5m2!1ses!2sco"
+                        width="100%" 
+                        height="100%" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonios -->
+    <section class="testimonials">
+        <div class="container">
+            <h2>Lo que dicen nuestros clientes</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"Excelente servicio, la apertura de cuenta fue rapidísima y todo desde mi celular. Muy recomendado."</p>
+                    <div class="author">
+                        <strong>María González</strong>
+                        <span>Empresaria</span>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"La atención al cliente es excepcional. Siempre resuelven mis dudas de forma rápida y profesional."</p>
+                    <div class="author">
+                        <strong>Carlos Ramírez</strong>
+                        <span>Profesional independiente</span>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"Me encanta la app, es muy intuitiva y puedo hacer todas mis transacciones sin complicaciones."</p>
+                    <div class="author">
+                        <strong>Ana Martínez</strong>
+                        <span>Estudiante</span>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"Los préstamos son rápidos y con tasas justas. El mejor banco digital de la región."</p>
+                    <div class="author">
+                        <strong>Jorge Pérez</strong>
+                        <span>Comerciante</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacto -->
     <section id="contacto" class="contact">
         <div class="container">
-            <h2 class="section-title">Contáctanos</h2>
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <h3>Estamos aquí para ayudarte</h3>
-                    <div class="info-item">
-                        <strong>📞 Línea de Atención:</strong>
-                        <p>018000 123 456</p>
-                    </div>
-                    <div class="info-item">
-                        <strong>📧 Email:</strong>
-                        <p>contacto@bancocucutaexpress.com</p>
-                    </div>
-                    <div class="info-item">
-                        <strong>📍 Oficina Principal:</strong>
-                        <p>Av. Gran Colombia #10-20, Cúcuta, Colombia</p>
-                    </div>
-                    <div class="info-item">
-                        <strong>🕐 Horario:</strong>
-                        <p>Lunes a Viernes: 8:00 AM - 5:00 PM<br>Sábados: 9:00 AM - 1:00 PM</p>
-                    </div>
-                </div>
-                <form class="contact-form">
+            <h2>Contáctanos</h2>
+            <p class="section-subtitle">Estamos aquí para ayudarte</p>
+            <form class="contact-form">
+                <div class="form-group">
                     <input type="text" placeholder="Nombre completo" required>
-                    <input type="email" placeholder="Correo electrónico" required>
+                </div>
+                <div class="form-group">
                     <input type="tel" placeholder="Teléfono" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Correo electrónico" required>
+                </div>
+                <div class="form-group">
                     <textarea placeholder="Mensaje" rows="5" required></textarea>
-                    <button type="submit" class="btn-primary">Enviar Mensaje</button>
-                </form>
-            </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Enviar solicitud</button>
+            </form>
         </div>
     </section>
 
-    <footer>
+    <!-- Footer -->
+    <footer class="footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
                     <h4>Banco Cúcuta Express</h4>
-                    <p>Tu banco de confianza desde 1999</p>
+                    <p>Tu banco digital rápido, seguro y cercano</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
                 </div>
                 <div class="footer-section">
-                    <h4>Enlaces Rápidos</h4>
+                    <h4>Enlaces</h4>
                     <ul>
-                        <li><a href="#">Términos y Condiciones</a></li>
-                        <li><a href="#">Política de Privacidad</a></li>
-                        <li><a href="#">Preguntas Frecuentes</a></li>
+                        <li><a href="#">Políticas de seguridad</a></li>
+                        <li><a href="#">Términos y condiciones</a></li>
+                        <li><a href="#">Protección de datos</a></li>
+                        <li><a href="#">Preguntas frecuentes</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Síguenos</h4>
-                    <div class="social-links">
-                        <a href="#">Facebook</a>
-                        <a href="#">Twitter</a>
-                        <a href="#">Instagram</a>
-                    </div>
+                    <h4>Horarios de atención</h4>
+                    <p><i class="far fa-clock"></i> Lunes a Viernes: 8:00 AM - 5:00 PM</p>
+                    <p><i class="far fa-clock"></i> Sábados: 9:00 AM - 1:00 PM</p>
+                    <p><i class="fas fa-phone"></i> Línea nacional: 018000-123456</p>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -518,7 +1182,228 @@
         </div>
     </footer>
 
-    <!-- VAPI AI Widget -->
+    <!-- Modales de Artículos del Blog -->
+    <div id="modalArticulo1" class="modal-articulo">
+        <div class="modal-articulo-content">
+            <button class="modal-close" onclick="cerrarModalArticulo('modalArticulo1')">&times;</button>
+            <div class="articulo-header">
+                <i class="fas fa-chart-pie"></i>
+                <span class="articulo-categoria">Ahorro</span>
+            </div>
+            <h2>5 estrategias para ahorrar dinero cada mes</h2>
+            <div class="articulo-meta">
+                <span><i class="far fa-calendar"></i> 10 Dic 2024</span>
+                <span><i class="far fa-clock"></i> 5 min de lectura</span>
+            </div>
+            <div class="articulo-contenido">
+                <p>Ahorrar dinero no tiene que ser complicado ni requiere grandes sacrificios. Con estas 5 estrategias probadas, podrás aumentar tu capacidad de ahorro significativamente cada mes.</p>
+                
+                <h3>1. Aplica la regla del 50/30/20</h3>
+                <p>Destina el 50% de tus ingresos a necesidades básicas, 30% a gastos personales y 20% al ahorro. Esta distribución te ayudará a mantener un equilibrio financiero saludable.</p>
+                
+                <h3>2. Automatiza tus ahorros</h3>
+                <p>Configura transferencias automáticas el día que recibes tu salario. Si no ves el dinero, no lo extrañarás. Trata tu ahorro como un gasto fijo más.</p>
+                
+                <h3>3. Elimina suscripciones innecesarias</h3>
+                <p>Revisa todas tus suscripciones mensuales (streaming, gimnasio, apps) y cancela las que realmente no uses. Podrías ahorrar entre $50.000 y $150.000 mensuales.</p>
+                
+                <h3>4. Compara precios antes de comprar</h3>
+                <p>Usa aplicaciones de comparación de precios y espera ofertas para compras grandes. Un poco de paciencia puede ahorrarte hasta un 30% en tus compras.</p>
+                
+                <h3>5. Prepara comida en casa</h3>
+                <p>Comer fuera puede costar 3-4 veces más que cocinar en casa. Planifica tus comidas semanalmente y lleva almuerzo al trabajo. Podrías ahorrar más de $300.000 al mes.</p>
+                
+                <h3>Consejos adicionales para maximizar tu ahorro</h3>
+                <ul>
+                    <li><strong>Establece metas claras:</strong> Define objetivos específicos como "ahorrar $2.000.000 en 6 meses para vacaciones"</li>
+                    <li><strong>Usa la técnica del sobre:</strong> Separa efectivo en sobres para diferentes categorías de gastos</li>
+                    <li><strong>Aprovecha descuentos y cashback:</strong> Usa tarjetas que ofrezcan recompensas en tus compras habituales</li>
+                    <li><strong>Revisa tus gastos mensualmente:</strong> Analiza dónde puedes reducir y ajusta tu presupuesto</li>
+                    <li><strong>Invierte tus ahorros:</strong> No dejes el dinero quieto, considera CDTs o fondos de inversión</li>
+                </ul>
+                
+                <h3>Herramientas que te pueden ayudar</h3>
+                <p>En Banco Cúcuta Express ofrecemos herramientas digitales para ayudarte a ahorrar:</p>
+                <ul>
+                    <li>Simuladores de ahorro para proyectar tus metas</li>
+                    <li>Alertas automáticas de gastos</li>
+                    <li>Categorización inteligente de transacciones</li>
+                    <li>Metas de ahorro programables</li>
+                </ul>
+                
+                <p><strong>Conclusión:</strong> Implementar estas estrategias no solo te ayudará a ahorrar más, sino que también te dará mayor control sobre tus finanzas personales. Recuerda que el ahorro es un hábito que se construye día a día. ¡Comienza hoy mismo!</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalArticulo2" class="modal-articulo">
+        <div class="modal-articulo-content">
+            <button class="modal-close" onclick="cerrarModalArticulo('modalArticulo2')">&times;</button>
+            <div class="articulo-header">
+                <i class="fas fa-shield-alt"></i>
+                <span class="articulo-categoria">Seguridad</span>
+            </div>
+            <h2>Cómo protegerte del fraude bancario en línea</h2>
+            <div class="articulo-meta">
+                <span><i class="far fa-calendar"></i> 8 Dic 2024</span>
+                <span><i class="far fa-clock"></i> 7 min de lectura</span>
+            </div>
+            <div class="articulo-contenido">
+                <p>El fraude bancario en línea está en aumento. Conoce las señales de alerta y aprende a proteger tu dinero en el mundo digital.</p>
+                
+                <h3>Señales de alerta de phishing</h3>
+                <ul>
+                    <li>Correos con errores ortográficos o gramaticales</li>
+                    <li>URLs sospechosas que no coinciden con el sitio oficial</li>
+                    <li>Solicitudes urgentes de información personal</li>
+                    <li>Ofertas demasiado buenas para ser verdad</li>
+                </ul>
+                
+                <h3>Mejores prácticas de seguridad</h3>
+                <p><strong>1. Verifica siempre la URL:</strong> Antes de ingresar tus datos, asegúrate de que la dirección web comience con "https://" y tenga el candado de seguridad.</p>
+                
+                <p><strong>2. Usa autenticación de dos factores:</strong> Activa esta función en todas tus cuentas bancarias. Añade una capa extra de seguridad.</p>
+                
+                <p><strong>3. No uses WiFi público para transacciones:</strong> Las redes públicas son vulnerables. Usa datos móviles o una VPN confiable.</p>
+                
+                <p><strong>4. Mantén tu software actualizado:</strong> Las actualizaciones incluyen parches de seguridad importantes.</p>
+                
+                <h3>Qué hacer si sospechas fraude</h3>
+                <p>Si detectas actividad sospechosa, actúa inmediatamente: contacta al banco, cambia tus contraseñas y reporta el incidente a las autoridades.</p>
+                
+                <h3>Tipos comunes de fraude bancario</h3>
+                <p><strong>1. Phishing por correo electrónico:</strong> Correos que imitan al banco solicitando datos personales. Nunca hagas clic en enlaces sospechosos.</p>
+                
+                <p><strong>2. Vishing (phishing por voz):</strong> Llamadas telefónicas donde se hacen pasar por el banco. El banco nunca te pedirá contraseñas por teléfono.</p>
+                
+                <p><strong>3. Smishing (phishing por SMS):</strong> Mensajes de texto con enlaces maliciosos. Verifica siempre la autenticidad antes de hacer clic.</p>
+                
+                <p><strong>4. Skimming:</strong> Dispositivos instalados en cajeros para robar información de tarjetas. Revisa siempre el cajero antes de usarlo.</p>
+                
+                <h3>Cómo proteger tus contraseñas</h3>
+                <ul>
+                    <li>Usa contraseñas únicas para cada servicio</li>
+                    <li>Combina letras mayúsculas, minúsculas, números y símbolos</li>
+                    <li>Cambia tus contraseñas cada 3-6 meses</li>
+                    <li>Usa un gestor de contraseñas confiable</li>
+                    <li>Nunca compartas tus contraseñas con nadie</li>
+                </ul>
+                
+                <h3>Recursos adicionales</h3>
+                <p>En Banco Cúcuta Express te ofrecemos:</p>
+                <ul>
+                    <li>Alertas de transacciones en tiempo real</li>
+                    <li>Bloqueo temporal de tarjetas desde la app</li>
+                    <li>Verificación biométrica (huella y reconocimiento facial)</li>
+                    <li>Línea de atención 24/7 para reportar fraudes: 018000-123456</li>
+                </ul>
+                
+                <p><strong>Recuerda:</strong> La prevención es tu mejor defensa. Mantente informado y alerta ante cualquier actividad sospechosa.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalArticulo3" class="modal-articulo">
+        <div class="modal-articulo-content">
+            <button class="modal-close" onclick="cerrarModalArticulo('modalArticulo3')">&times;</button>
+            <div class="articulo-header">
+                <i class="fas fa-graduation-cap"></i>
+                <span class="articulo-categoria">Inversión</span>
+            </div>
+            <h2>Guía para principiantes: ¿Qué es un CDT?</h2>
+            <div class="articulo-meta">
+                <span><i class="far fa-calendar"></i> 5 Dic 2024</span>
+                <span><i class="far fa-clock"></i> 6 min de lectura</span>
+            </div>
+            <div class="articulo-contenido">
+                <p>Los Certificados de Depósito a Término (CDT) son una excelente opción para hacer crecer tu dinero de forma segura. Te explicamos todo lo que necesitas saber.</p>
+                
+                <h3>¿Qué es un CDT?</h3>
+                <p>Un CDT es un producto de ahorro donde depositas una cantidad de dinero por un tiempo determinado (plazo) y recibes intereses. Es como prestarle dinero al banco a cambio de una ganancia.</p>
+                
+                <h3>Ventajas de invertir en CDT</h3>
+                <ul>
+                    <li><strong>Seguridad:</strong> Están respaldados por el Fondo de Garantías (Fogafín) hasta $50 millones</li>
+                    <li><strong>Rentabilidad predecible:</strong> Sabes exactamente cuánto ganarás</li>
+                    <li><strong>Diferentes plazos:</strong> Desde 30 días hasta varios años</li>
+                    <li><strong>Tasas atractivas:</strong> Generalmente mejores que una cuenta de ahorros</li>
+                </ul>
+                
+                <h3>¿Cómo funcionan las tasas?</h3>
+                <p>Las tasas varían según el plazo y el monto. Generalmente, a mayor plazo y monto, mejor tasa de interés. En Banco Cúcuta Express ofrecemos tasas desde 4.5% hasta 6.5% EA.</p>
+                
+                <h3>¿Cuándo es recomendable un CDT?</h3>
+                <p>Los CDT son ideales cuando tienes dinero que no necesitarás en el corto plazo y quieres una rentabilidad segura. Son perfectos para metas a mediano plazo como vacaciones, compra de vehículo o fondo de emergencia.</p>
+                
+                <h3>Consideraciones importantes</h3>
+                <p>Ten en cuenta que si retiras el dinero antes del vencimiento, podrías perder los intereses o pagar penalidades. Planifica bien tu inversión.</p>
+                
+                <h3>Ejemplo práctico de inversión en CDT</h3>
+                <p>Imagina que inviertes $5.000.000 en un CDT a 360 días con una tasa del 6% EA:</p>
+                <ul>
+                    <li><strong>Monto invertido:</strong> $5.000.000</li>
+                    <li><strong>Tasa de interés:</strong> 6% EA</li>
+                    <li><strong>Plazo:</strong> 360 días</li>
+                    <li><strong>Intereses ganados:</strong> $300.000</li>
+                    <li><strong>Total al vencimiento:</strong> $5.300.000</li>
+                </ul>
+                
+                <h3>Comparación: CDT vs Cuenta de Ahorros</h3>
+                <table style="width: 100%; margin: 20px 0; border-collapse: collapse;">
+                    <tr style="background: rgba(124, 58, 237, 0.1);">
+                        <th style="padding: 10px; text-align: left;">Característica</th>
+                        <th style="padding: 10px; text-align: left;">CDT</th>
+                        <th style="padding: 10px; text-align: left;">Cuenta de Ahorros</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">Tasa de interés</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">4.5% - 6.5% EA</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">3.0% - 4.5% EA</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">Disponibilidad</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">Al vencimiento</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">Inmediata</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">Monto mínimo</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">$1.000.000</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">$0</td>
+                    </tr>
+                </table>
+                
+                <h3>Pasos para abrir un CDT en Banco Cúcuta Express</h3>
+                <ol>
+                    <li>Ingresa a tu banca en línea o app móvil</li>
+                    <li>Selecciona "Inversiones" > "Abrir CDT"</li>
+                    <li>Elige el monto y plazo deseado</li>
+                    <li>Revisa la tasa de interés ofrecida</li>
+                    <li>Confirma tu inversión con tu clave de seguridad</li>
+                    <li>Recibe tu certificado digital por correo</li>
+                </ol>
+                
+                <p><strong>Tip final:</strong> Diversifica tus inversiones. Puedes tener varios CDTs con diferentes plazos para tener liquidez escalonada. ¡Usa nuestro simulador de CDT para calcular tus ganancias!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Banner de Cookies -->
+    <div id="cookieBanner" class="cookie-banner"></div>
+        <div class="cookie-content">
+            <i class="fas fa-cookie-bite"></i>
+            <div class="cookie-text">
+                <p><strong>Usamos cookies</strong> para mejorar tu experiencia en nuestro sitio web, personalizar contenido y analizar nuestro tráfico. Al continuar navegando, aceptas nuestro uso de cookies.</p>
+            </div>
+            <div class="cookie-actions">
+                <button class="btn-cookie-accept" id="btnAceptarCookies">Aceptar</button>
+                <button class="btn-cookie-settings" id="btnPoliticaCookies">Revisar políticas</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    
+    <!-- Vapi AI Widget -->
     <vapi-widget
         public-key="d4c36367-52d4-4a8a-bd7b-80fafc45fc03"
         assistant-id="2d6ac14a-4623-4f31-a61f-13cfcf1c15f3"
@@ -543,7 +1428,5 @@
         consent-storage-key="vapi_widget_consent">
     </vapi-widget>
     <script src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js" async type="text/javascript"></script>
-
-    <script src="script.js"></script>
 </body>
 </html>
