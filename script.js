@@ -1,1336 +1,1067 @@
-/* ========================================
-   INTRO MODAL - Control con localStorage
-   ======================================== */
+// ============================================
+// BANCO CÚCUTA EXPRESS WEBSITE FUNCTIONALITY
+// ============================================
 
-// Función que se ejecuta cuando la página carga
-document.addEventListener('DOMContentLoaded', function() {
-    const introModal = document.getElementById('introModal');
-    const btnIngresar = document.getElementById('btnIngresar');
+// Global state management
+const BankingApp = {
+    user: null,
+    isLoggedIn: false,
+    currentSection: 'inicio',
+    notifications: [],
+    transactions: [],
+    accounts: []
+};
+
+// ============================================
+// ENHANCED INTRO SCREEN
+// ============================================
+window.addEventListener('load', () => {
+    const introScreen = document.getElementById('intro-screen');
     
-    // Verificar si el usuario ya vio la intro anteriormente
-    const introVisto = localStorage.getItem('introVisto');
+    // Check if user has seen intro before
+    const hasSeenIntro = sessionStorage.getItem('hasSeenIntro');
     
-    if (introVisto === 'true') {
-        // Si ya vio la intro, ocultarla inmediatamente
-        introModal.classList.add('hidden');
+    if (hasSeenIntro) {
+        introScreen.style.display = 'none';
+        document.body.style.overflow = 'auto';
     } else {
-        // Si es la primera vez, mostrar la intro
-        introModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        
+        // Effect simulation (visual feedback)
+        const loaderBar = document.querySelector('.loader-bar');
+        if (loaderBar) {
+            loaderBar.addEventListener('animationend', () => {
+                // Add a subtle pulse when loading completes
+                loaderBar.style.animation = 'none';
+                setTimeout(() => {
+                    loaderBar.style.animation = 'pulse 0.5s ease';
+                }, 10);
+            });
+        }
+        
+        // Hide intro after animation completes
+        setTimeout(() => {
+            introScreen.style.animation = 'fadeOut 1s ease forwards';
+            setTimeout(() => {
+                introScreen.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                sessionStorage.setItem('hasSeenIntro', 'true');
+                
+                // Trigger welcome animation on main content
+                triggerWelcomeAnimation();
+            }, 1000);
+        }, 4500);
     }
-    
-    // Evento al hacer clic en el botón "Ingresar al sitio"
-    btnIngresar.addEventListener('click', function() {
-        // Aplicar animación de salida (fade-out)
-        introModal.classList.add('fade-out');
-        
-        // Guardar en localStorage que el usuario ya vio la intro
-        localStorage.setItem('introVisto', 'true');
-        
-        // Después de la animación, ocultar completamente el modal
-        setTimeout(function() {
-            introModal.classList.add('hidden');
-        }, 600); // 600ms coincide con la duración de la animación fadeOut
-    });
 });
 
-/* ========================================
-   NAVBAR - Menú hamburguesa y navegación
-   ======================================== */
-
-// Toggle del menú móvil
-document.addEventListener('DOMContentLoaded', function() {
-    const navToggle = document.getElementById('navToggle');
-    const navMenu = document.getElementById('navMenu');
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    // Abrir/cerrar menú móvil
-    if (navToggle) {
-        navToggle.addEventListener('click', function() {
-            navToggle.classList.toggle('active');
-            navMenu.classList.toggle('active');
-            document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : 'auto';
-        });
+// Welcome animation for main content
+function triggerWelcomeAnimation() {
+    const hero = document.querySelector('.hero');
+    if (hero) {
+        hero.style.opacity = '0';
+        hero.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            hero.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            hero.style.opacity = '1';
+            hero.style.transform = 'translateY(0)';
+        }, 100);
     }
-    
-    // Cerrar menú al hacer clic en un enlace
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            navToggle.classList.remove('active');
-            navMenu.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        });
-    });
-    
-    // Cerrar menú al hacer clic fuera
-    document.addEventListener('click', function(e) {
-        if (!navMenu.contains(e.target) && !navToggle.contains(e.target)) {
-            navToggle.classList.remove('active');
-            navMenu.classList.remove('active');
-            document.body.style.overflow = 'auto';
+}
+
+// ============================================
+// MODAL SYSTEM
+// ============================================
+const loginModal = document.getElementById('login-modal');
+const productModal = document.getElementById('product-modal');
+const closeBtns = document.querySelectorAll('.modal-close');
+
+// Open Login Modal (from navbar)
+document.querySelectorAll('.btn-login').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        const href = btn.getAttribute('href');
+        // Si el href es #ingresar, hacer scroll suave, si no, abrir modal
+        if (href === '#ingresar') {
+            // Dejar que el navegador haga el scroll suave
+            return;
+        } else {
+            e.preventDefault();
+            openModal(loginModal);
         }
     });
+});
+
+// Product buttons configuration
+const productButtons = {
+    'Solicitar ahora': {
+        title: 'Solicitud de Producto',
+        description: 'Completa el formulario y nos contactaremos contigo',
+        icon: `<svg width="48" height="48" viewBox="0 0 48 48" fill="currentColor">
+            <rect x="4" y="12" width="40" height="24" rx="3" fill="currentColor"/>
+        </svg>`
+    },
+    'Abrir cuenta gratis': {
+        title: 'Apertura de Cuenta',
+        description: 'Abre tu cuenta 100% digital en minutos',
+        icon: `<svg width="48" height="48" viewBox="0 0 48 48" fill="currentColor">
+            <circle cx="24" cy="24" r="20" fill="currentColor"/>
+        </svg>`
+    },
+    'Invertir ahora': {
+        title: 'Solicitud de Inversión',
+        description: 'Comienza a invertir con nosotros',
+        icon: `<svg width="48" height="48" viewBox="0 0 48 48" fill="currentColor">
+            <path d="M24 4L4 14v10c0 12.5 8.33 24.17 20 27.5 11.67-3.33 20-15 20-27.5V14L24 4z" fill="currentColor"/>
+        </svg>`
+    }
+};
+
+// Handle all action buttons (from new sections)
+document.addEventListener('click', (e) => {
+    // Botones de abrir cuenta
+    if (e.target.closest('.btn-open-account')) {
+        e.preventDefault();
+        document.getElementById('modal-title').textContent = 'Apertura de Cuenta Digital';
+        document.getElementById('modal-description').textContent = 'Completa tus datos para abrir tu cuenta';
+        document.getElementById('modal-icon').innerHTML = productButtons['Abrir cuenta gratis'].icon;
+        document.getElementById('producto-solicitado').value = 'Cuenta Digital';
+        openModal(productModal);
+    }
     
-    // Conectar botón del navbar con modal de apertura
-    const btnNavAbrirCuenta = document.getElementById('btnNavAbrirCuenta');
-    if (btnNavAbrirCuenta) {
-        btnNavAbrirCuenta.addEventListener('click', function() {
-            const modalApertura = document.getElementById('modalAperturaCuenta');
-            if (modalApertura) {
-                modalApertura.classList.add('active');
-                document.body.style.overflow = 'hidden';
-                // Cerrar menú móvil si está abierto
-                navToggle.classList.remove('active');
-                navMenu.classList.remove('active');
-            }
-        });
+    // Botones de invertir
+    if (e.target.closest('.btn-invest')) {
+        e.preventDefault();
+        const productName = e.target.closest('.invest-card')?.querySelector('h3')?.textContent || 'Inversión';
+        document.getElementById('modal-title').textContent = 'Solicitud de Inversión';
+        document.getElementById('modal-description').textContent = 'Completa el formulario para comenzar a invertir';
+        document.getElementById('modal-icon').innerHTML = productButtons['Invertir ahora'].icon;
+        document.getElementById('producto-solicitado').value = productName;
+        openModal(productModal);
+    }
+    
+    // Botones de solicitar
+    if (e.target.closest('.btn-request')) {
+        e.preventDefault();
+        const productName = e.target.closest('.request-card')?.querySelector('h3')?.textContent || 'Producto Financiero';
+        document.getElementById('modal-title').textContent = 'Solicitud de Producto Financiero';
+        document.getElementById('modal-description').textContent = 'Completa tus datos y te contactaremos pronto';
+        document.getElementById('modal-icon').innerHTML = productButtons['Solicitar ahora'].icon;
+        document.getElementById('producto-solicitado').value = productName;
+        openModal(productModal);
     }
 });
 
-// Smooth scroll para los enlaces de navegación
+// Open Product Modal (legacy support)
+document.querySelectorAll('.btn-product').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const buttonText = btn.textContent.trim();
+        const productName = btn.closest('.product-card')?.querySelector('h3')?.textContent || 'Producto';
+        
+        // Find matching product
+        let productConfig = null;
+        for (const [key, value] of Object.entries(productButtons)) {
+            if (buttonText.includes(key) || key.includes(buttonText.split('\n')[0].trim())) {
+                productConfig = value;
+                break;
+            }
+        }
+        
+        if (productConfig) {
+            document.getElementById('modal-title').textContent = productConfig.title;
+            document.getElementById('modal-description').textContent = productConfig.description;
+            document.getElementById('modal-icon').innerHTML = productConfig.icon;
+            document.getElementById('producto-solicitado').value = productName;
+            openModal(productModal);
+        }
+    });
+});
+
+// Close modals
+closeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        closeModal(loginModal);
+        closeModal(productModal);
+    });
+});
+
+// Close modal when clicking outside
+window.addEventListener('click', (e) => {
+    if (e.target === loginModal) {
+        closeModal(loginModal);
+    }
+    if (e.target === productModal) {
+        closeModal(productModal);
+    }
+});
+
+function openModal(modal) {
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal(modal) {
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+// ============================================
+// FORM SUBMISSIONS
+// ============================================
+
+// Login Form (Modal)
+const loginForm = document.querySelector('.login-form');
+if (loginForm) {
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const docType = loginForm.querySelector('select').value;
+        const docNumber = loginForm.querySelectorAll('input')[0].value;
+        const password = loginForm.querySelectorAll('input')[1].value;
+        
+        if (!docType || !docNumber || !password) {
+            showNotification('Por favor completa todos los campos', 'error');
+            return;
+        }
+        
+        // Simulate login
+        showNotification('Iniciando sesión...', 'success');
+        
+        setTimeout(() => {
+            showNotification('¡Bienvenido! Redirigiendo a tu cuenta...', 'success');
+            closeModal(loginModal);
+            loginForm.reset();
+        }, 1500);
+    });
+}
+
+// Login Form (Section)
+const loginFormMain = document.querySelector('.login-form-main');
+if (loginFormMain) {
+    loginFormMain.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const docType = loginFormMain.querySelector('select').value;
+        const docNumber = loginFormMain.querySelectorAll('input[type="text"]')[0].value;
+        const password = loginFormMain.querySelector('input[type="password"]').value;
+        
+        if (!docType || !docNumber || !password) {
+            showNotification('Por favor completa todos los campos', 'error');
+            return;
+        }
+        
+        // Simulate login
+        showNotification('Iniciando sesión...', 'success');
+        
+        setTimeout(() => {
+            showNotification('¡Bienvenido! Redirigiendo a tu cuenta...', 'success');
+            loginFormMain.reset();
+            
+            // Scroll to top after login
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 1500);
+    });
+}
+
+// Register button
+const btnRegister = document.querySelector('.btn-register');
+if (btnRegister) {
+    btnRegister.addEventListener('click', (e) => {
+        e.preventDefault();
+        // Scroll to abrir cuenta section
+        const abrirCuentaSection = document.getElementById('abrir-cuenta');
+        if (abrirCuentaSection) {
+            abrirCuentaSection.scrollIntoView({ behavior: 'smooth' });
+            showNotification('Completa el formulario para crear tu cuenta', 'success');
+        }
+    });
+}
+
+// Product Form
+const productForm = document.querySelector('.product-form');
+if (productForm) {
+    productForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const name = productForm.querySelector('input[name="nombre"]').value;
+        const email = productForm.querySelector('input[name="email"]').value;
+        const phone = productForm.querySelector('input[name="telefono"]').value;
+        const docType = productForm.querySelector('select[name="tipo_documento"]').value;
+        const docNumber = productForm.querySelector('input[name="numero_documento"]').value;
+        
+        // Validation
+        if (!name || !email || !phone || !docType || !docNumber) {
+            showNotification('Por favor completa todos los campos obligatorios', 'error');
+            return;
+        }
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            showNotification('Por favor ingresa un correo válido', 'error');
+            return;
+        }
+        
+        // Show loading notification
+        showNotification('Enviando tu solicitud...', 'success');
+        
+        try {
+            // Submit to Formspree
+            const response = await fetch(productForm.action, {
+                method: 'POST',
+                body: new FormData(productForm),
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                showNotification('¡Solicitud enviada exitosamente! Te contactaremos pronto.', 'success');
+                closeModal(productModal);
+                productForm.reset();
+            } else {
+                showNotification('Hubo un error al enviar tu solicitud. Por favor intenta de nuevo.', 'error');
+            }
+        } catch (error) {
+            showNotification('Error de conexión. Por favor verifica tu internet e intenta de nuevo.', 'error');
+        }
+    });
+}
+
+// Contact Form
+const contactForm = document.querySelector('.contact-form');
+if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const name = contactForm.querySelector('input[name="nombre"]').value;
+        const email = contactForm.querySelector('input[name="email"]').value;
+        const phone = contactForm.querySelector('input[name="telefono"]').value;
+        const message = contactForm.querySelector('textarea[name="mensaje"]').value;
+        
+        if (!name || !email || !phone || !message) {
+            showNotification('Por favor completa todos los campos', 'error');
+            return;
+        }
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            showNotification('Por favor ingresa un correo válido', 'error');
+            return;
+        }
+        
+        // Show loading notification
+        showNotification('Enviando tu mensaje...', 'success');
+        
+        try {
+            // Submit to Formspree
+            const response = await fetch(contactForm.action, {
+                method: 'POST',
+                body: new FormData(contactForm),
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                showNotification('¡Mensaje enviado exitosamente! Nos contactaremos contigo pronto.', 'success');
+                contactForm.reset();
+            } else {
+                showNotification('Hubo un error al enviar tu mensaje. Por favor intenta de nuevo.', 'error');
+            }
+        } catch (error) {
+            showNotification('Error de conexión. Por favor verifica tu internet e intenta de nuevo.', 'error');
+        }
+    });
+}
+
+// ============================================
+// MOBILE MENU
+// ============================================
+const hamburger = document.querySelector('.hamburger');
+const navMenu = document.querySelector('.nav-menu');
+
+if (hamburger && navMenu) {
+    hamburger.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+        hamburger.classList.toggle('active');
+    });
+
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+        link.addEventListener('click', () => {
+            navMenu.classList.remove('active');
+            hamburger.classList.remove('active');
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
+            navMenu.classList.remove('active');
+            hamburger.classList.remove('active');
+        }
+    });
+}
+
+// ============================================
+// SMOOTH SCROLLING
+// ============================================
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (href === '#' || href === '#!') return;
+        
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+        const target = document.querySelector(href);
         if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
+            const offsetTop = target.offsetTop - 80;
+            window.scrollTo({
+                top: offsetTop,
+                behavior: 'smooth'
             });
         }
     });
 });
 
-// Manejo del formulario de contacto
-document.querySelector('.contact-form').addEventListener('submit', function(e) {
-    e.preventDefault();
+// ============================================
+// STATS COUNTER ANIMATION
+// ============================================
+function animateCounter(element) {
+    const target = parseInt(element.getAttribute('data-target'));
+    const duration = 2000;
+    const increment = target / (duration / 16);
+    let current = 0;
     
-    // Aquí puedes agregar la lógica para enviar el formulario
-    alert('¡Gracias por contactarnos! Nos comunicaremos contigo pronto.');
+    const updateCounter = () => {
+        current += increment;
+        if (current < target) {
+            element.textContent = Math.floor(current).toLocaleString('es-CO');
+            requestAnimationFrame(updateCounter);
+        } else {
+            element.textContent = target.toLocaleString('es-CO');
+        }
+    };
     
-    // Limpiar el formulario
-    this.reset();
-});
+    updateCounter();
+}
 
-// Animación al hacer scroll
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
+const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const counters = entry.target.querySelectorAll('.stat-number');
+            counters.forEach(counter => {
+                if (!counter.classList.contains('animated')) {
+                    counter.classList.add('animated');
+                    animateCounter(counter);
+                }
+            });
+            statsObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.3 });
 
-const observer = new IntersectionObserver(function(entries) {
+const statsSection = document.querySelector('.stats');
+if (statsSection) {
+    statsObserver.observe(statsSection);
+}
+
+// ============================================
+// FADE-IN ANIMATIONS
+// ============================================
+const fadeInObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.style.opacity = '1';
             entry.target.style.transform = 'translateY(0)';
         }
     });
-}, observerOptions);
+}, { threshold: 0.1 });
 
-// Aplicar animación a las tarjetas
-document.addEventListener('DOMContentLoaded', function() {
-    const cards = document.querySelectorAll('.product-card, .service-card, .step-card, .branch-card, .testimonial-card, .feature-card');
-    
-    cards.forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(card);
-    });
+document.querySelectorAll('.service-card, .product-card').forEach((card, index) => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(30px)';
+    card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+    fadeInObserver.observe(card);
 });
 
-// Efecto parallax suave en el hero
-window.addEventListener('scroll', function() {
-    const scrolled = window.pageYOffset;
-    const hero = document.querySelector('.hero');
-    if (hero) {
-        hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-    }
-});
+// ============================================
+// NAVBAR SCROLL EFFECT - Enhanced
+// ============================================
+let lastScroll = 0;
+const navbar = document.querySelector('.navbar');
 
-/* ========================================
-   SISTEMA DE APERTURA DE CUENTA
-   ======================================== */
-
-// Variables globales para el formulario
-let currentStep = 1;
-const totalSteps = 4;
-const formData = {};
-
-// Inicializar el sistema de apertura de cuenta
-document.addEventListener('DOMContentLoaded', function() {
-    const btnAbrirCuenta = document.getElementById('btnAbrirCuenta');
-    const modalApertura = document.getElementById('modalAperturaCuenta');
-    const btnCerrarModal = document.getElementById('btnCerrarModal');
-    const btnAnterior = document.getElementById('btnAnterior');
-    const btnSiguiente = document.getElementById('btnSiguiente');
-    const btnEnviar = document.getElementById('btnEnviar');
-    const formApertura = document.getElementById('formAperturaCuenta');
+window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
     
-    // Abrir modal
-    btnAbrirCuenta.addEventListener('click', function() {
-        modalApertura.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    });
-    
-    // Cerrar modal
-    btnCerrarModal.addEventListener('click', cerrarModal);
-    
-    // Cerrar al hacer clic fuera del modal
-    modalApertura.addEventListener('click', function(e) {
-        if (e.target === modalApertura) {
-            cerrarModal();
-        }
-    });
-    
-    // Navegación entre pasos
-    btnAnterior.addEventListener('click', function() {
-        if (currentStep > 1) {
-            cambiarPaso(currentStep - 1);
-        }
-    });
-    
-    btnSiguiente.addEventListener('click', function() {
-        if (validarPasoActual()) {
-            if (currentStep < totalSteps) {
-                cambiarPaso(currentStep + 1);
-            }
-        }
-    });
-    
-    // Enviar formulario
-    formApertura.addEventListener('submit', function(e) {
-        e.preventDefault();
-        if (validarPasoActual()) {
-            enviarSolicitud();
-        }
-    });
-    
-    // Validación en tiempo real
-    agregarValidacionTiempoReal();
-});
-
-// Función para cerrar el modal
-function cerrarModal() {
-    const modalApertura = document.getElementById('modalAperturaCuenta');
-    modalApertura.classList.remove('active');
-    document.body.style.overflow = 'auto';
-    
-    // Reiniciar formulario
-    setTimeout(function() {
-        document.getElementById('formAperturaCuenta').reset();
-        cambiarPaso(1);
-        document.getElementById('mensajeExito').style.display = 'none';
-        document.getElementById('formAperturaCuenta').style.display = 'block';
-    }, 300);
-}
-
-// Función para cambiar de paso
-function cambiarPaso(nuevoPaso) {
-    // Ocultar paso actual
-    document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.remove('active');
-    document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
-    
-    // Marcar pasos completados
-    if (nuevoPaso > currentStep) {
-        document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('completed');
-    }
-    
-    // Mostrar nuevo paso
-    currentStep = nuevoPaso;
-    document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.add('active');
-    document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
-    
-    // Actualizar botones
-    actualizarBotones();
-    
-    // Si es el paso de confirmación, mostrar resumen
-    if (currentStep === 4) {
-        mostrarResumen();
-    }
-}
-
-// Función para actualizar botones de navegación
-function actualizarBotones() {
-    const btnAnterior = document.getElementById('btnAnterior');
-    const btnSiguiente = document.getElementById('btnSiguiente');
-    const btnEnviar = document.getElementById('btnEnviar');
-    
-    // Mostrar/ocultar botón anterior
-    btnAnterior.style.display = currentStep === 1 ? 'none' : 'block';
-    
-    // Mostrar/ocultar botones siguiente y enviar
-    if (currentStep === totalSteps) {
-        btnSiguiente.style.display = 'none';
-        btnEnviar.style.display = 'block';
+    if (currentScroll > 50) {
+        navbar.classList.add('scrolled');
     } else {
-        btnSiguiente.style.display = 'block';
-        btnEnviar.style.display = 'none';
-    }
-}
-
-// Función para validar el paso actual
-function validarPasoActual() {
-    const pasoActual = document.querySelector(`.form-step[data-step="${currentStep}"]`);
-    const campos = pasoActual.querySelectorAll('input[required], select[required]');
-    let valido = true;
-    
-    campos.forEach(campo => {
-        if (!validarCampo(campo)) {
-            valido = false;
-        }
-    });
-    
-    // Validación especial para tipo de cuenta
-    if (currentStep === 3) {
-        const tipoCuentaSeleccionada = document.querySelector('input[name="tipoCuenta"]:checked');
-        if (!tipoCuentaSeleccionada) {
-            document.getElementById('errorTipoCuenta').textContent = 'Debes seleccionar un tipo de cuenta';
-            valido = false;
-        } else {
-            document.getElementById('errorTipoCuenta').textContent = '';
-        }
+        navbar.classList.remove('scrolled');
     }
     
-    // Validación de términos y condiciones
-    if (currentStep === 4) {
-        const aceptoTerminos = document.getElementById('aceptoTerminos');
-        if (!aceptoTerminos.checked) {
-            mostrarError(aceptoTerminos, 'Debes aceptar los términos y condiciones');
-            valido = false;
-        }
-    }
-    
-    return valido;
-}
-
-// Función para validar un campo individual
-function validarCampo(campo) {
-    const valor = campo.value.trim();
-    let valido = true;
-    let mensaje = '';
-    
-    // Validar campo vacío
-    if (campo.hasAttribute('required') && !valor) {
-        mensaje = 'Este campo es obligatorio';
-        valido = false;
-    }
-    
-    // Validaciones específicas por tipo
-    if (valor && valido) {
-        switch (campo.id) {
-            case 'numeroDocumento':
-                if (!/^\d{6,10}$/.test(valor)) {
-                    mensaje = 'Número de documento inválido (6-10 dígitos)';
-                    valido = false;
-                }
-                break;
-            case 'email':
-                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor)) {
-                    mensaje = 'Correo electrónico inválido';
-                    valido = false;
-                }
-                break;
-            case 'celular':
-                if (!/^\d{10}$/.test(valor)) {
-                    mensaje = 'Número de celular inválido (10 dígitos)';
-                    valido = false;
-                }
-                break;
-            case 'fechaNacimiento':
-                const fecha = new Date(valor);
-                const hoy = new Date();
-                const edad = hoy.getFullYear() - fecha.getFullYear();
-                if (edad < 18) {
-                    mensaje = 'Debes ser mayor de 18 años';
-                    valido = false;
-                }
-                break;
-        }
-    }
-    
-    if (!valido) {
-        mostrarError(campo, mensaje);
+    // Hide navbar on scroll down, show on scroll up
+    if (currentScroll > lastScroll && currentScroll > 100) {
+        navbar.style.transform = 'translateY(-100%)';
     } else {
-        limpiarError(campo);
+        navbar.style.transform = 'translateY(0)';
     }
     
-    return valido;
-}
-
-// Función para mostrar error en un campo
-function mostrarError(campo, mensaje) {
-    campo.classList.add('error');
-    const errorElement = campo.parentElement.querySelector('.error-message');
-    if (errorElement) {
-        errorElement.textContent = mensaje;
-    }
-}
-
-// Función para limpiar error de un campo
-function limpiarError(campo) {
-    campo.classList.remove('error');
-    const errorElement = campo.parentElement.querySelector('.error-message');
-    if (errorElement) {
-        errorElement.textContent = '';
-    }
-}
-
-// Función para agregar validación en tiempo real
-function agregarValidacionTiempoReal() {
-    const campos = document.querySelectorAll('#formAperturaCuenta input, #formAperturaCuenta select');
-    
-    campos.forEach(campo => {
-        campo.addEventListener('blur', function() {
-            if (this.value.trim()) {
-                validarCampo(this);
-            }
-        });
-        
-        campo.addEventListener('input', function() {
-            if (this.classList.contains('error')) {
-                limpiarError(this);
-            }
-        });
-    });
-}
-
-// Función para mostrar resumen en el paso de confirmación
-function mostrarResumen() {
-    // Recopilar datos del formulario
-    const nombres = document.getElementById('nombres').value;
-    const apellidos = document.getElementById('apellidos').value;
-    const tipoDoc = document.getElementById('tipoDocumento').value;
-    const numeroDoc = document.getElementById('numeroDocumento').value;
-    const fechaNac = document.getElementById('fechaNacimiento').value;
-    const email = document.getElementById('email').value;
-    const celular = document.getElementById('celular').value;
-    const direccion = document.getElementById('direccion').value;
-    const ciudad = document.getElementById('ciudad').value;
-    const departamento = document.getElementById('departamento').value;
-    const tipoCuenta = document.querySelector('input[name="tipoCuenta"]:checked').value;
-    
-    // Mostrar en el resumen
-    document.getElementById('confirmNombre').textContent = `${nombres} ${apellidos}`;
-    document.getElementById('confirmDocumento').textContent = `${tipoDoc} ${numeroDoc}`;
-    document.getElementById('confirmFecha').textContent = new Date(fechaNac).toLocaleDateString('es-CO');
-    document.getElementById('confirmEmail').textContent = email;
-    document.getElementById('confirmCelular').textContent = celular;
-    document.getElementById('confirmDireccion').textContent = `${direccion}, ${ciudad}, ${departamento}`;
-    document.getElementById('confirmCuenta').textContent = tipoCuenta === 'ahorros' ? 'Cuenta de Ahorros' : 'Cuenta Semilla';
-    
-    // Guardar en objeto formData
-    formData.nombres = nombres;
-    formData.apellidos = apellidos;
-    formData.tipoDocumento = tipoDoc;
-    formData.numeroDocumento = numeroDoc;
-    formData.fechaNacimiento = fechaNac;
-    formData.email = email;
-    formData.celular = celular;
-    formData.direccion = direccion;
-    formData.ciudad = ciudad;
-    formData.departamento = departamento;
-    formData.tipoCuenta = tipoCuenta;
-}
-
-// Función para enviar la solicitud
-function enviarSolicitud() {
-    // Generar número de solicitud único
-    const numeroSolicitud = 'BCE-' + Date.now().toString().slice(-8);
-    
-    // Agregar fecha de solicitud
-    formData.fechaSolicitud = new Date().toISOString();
-    formData.numeroSolicitud = numeroSolicitud;
-    formData.estado = 'Pendiente';
-    
-    // Guardar en localStorage
-    let solicitudes = JSON.parse(localStorage.getItem('solicitudesApertura') || '[]');
-    solicitudes.push(formData);
-    localStorage.setItem('solicitudesApertura', JSON.stringify(solicitudes));
-    
-    // Mostrar mensaje de éxito
-    document.getElementById('formAperturaCuenta').style.display = 'none';
-    document.getElementById('mensajeExito').style.display = 'block';
-    document.getElementById('numeroSolicitud').textContent = numeroSolicitud;
-    
-    // Botón para cerrar después del éxito
-    document.getElementById('btnCerrarExito').addEventListener('click', cerrarModal);
-    
-    console.log('Solicitud guardada:', formData);
-}
-
-// Función para ver solicitudes guardadas (para administración)
-function verSolicitudesGuardadas() {
-    const solicitudes = JSON.parse(localStorage.getItem('solicitudesApertura') || '[]');
-    console.table(solicitudes);
-    return solicitudes;
-}
-
-// Hacer la función disponible globalmente para debugging
-window.verSolicitudesGuardadas = verSolicitudesGuardadas;
-
-/* ========================================
-   ALERTA DEL BANCO
-   ======================================== */
-
-document.addEventListener('DOMContentLoaded', function() {
-    const alertaBanco = document.getElementById('alertaBanco');
-    const btnCerrarAlerta = document.getElementById('btnCerrarAlerta');
-    
-    // Verificar si la alerta ya fue cerrada
-    const alertaCerrada = localStorage.getItem('alertaBancoCerrada');
-    
-    if (alertaCerrada === 'true') {
-        alertaBanco.classList.add('hidden');
-    }
-    
-    // Cerrar alerta
-    if (btnCerrarAlerta) {
-        btnCerrarAlerta.addEventListener('click', function() {
-            alertaBanco.classList.add('hidden');
-            localStorage.setItem('alertaBancoCerrada', 'true');
-        });
-    }
+    lastScroll = currentScroll;
 });
 
-/* ========================================
-   PORTAL DEL CLIENTE / LOGIN
-   ======================================== */
+// ============================================
+// ACTIVE NAV LINKS
+// ============================================
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-menu a[href^="#"]');
 
-document.addEventListener('DOMContentLoaded', function() {
-    const loginForm = document.getElementById('loginForm');
-    const togglePassword = document.getElementById('togglePassword');
-    const loginPassword = document.getElementById('loginPassword');
+window.addEventListener('scroll', () => {
+    let current = '';
     
-    // Toggle mostrar/ocultar contraseña
-    if (togglePassword) {
-        togglePassword.addEventListener('click', function() {
-            const type = loginPassword.getAttribute('type') === 'password' ? 'text' : 'password';
-            loginPassword.setAttribute('type', type);
-            
-            const icon = this.querySelector('i');
-            icon.classList.toggle('fa-eye');
-            icon.classList.toggle('fa-eye-slash');
-        });
-    }
-    
-    // Manejo del formulario de login
-    if (loginForm) {
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const usuario = document.getElementById('loginUsuario').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            // Simulación de login (en producción esto se conectaría a un backend)
-            console.log('Intento de login:', { usuario, password: '***' });
-            
-            alert('Funcionalidad de login en desarrollo. En producción, esto se conectaría a un servidor seguro.');
-        });
-    }
-});
-
-/* ========================================
-   SIMULADORES FINANCIEROS
-   ======================================== */
-
-// Simulador de CDT
-document.addEventListener('DOMContentLoaded', function() {
-    const formCDT = document.getElementById('formCDT');
-    
-    if (formCDT) {
-        formCDT.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const monto = parseFloat(document.getElementById('montoCDT').value);
-            const plazoSelect = document.getElementById('plazoCDT');
-            const plazo = parseInt(plazoSelect.value);
-            
-            // Obtener tasa según el plazo
-            let tasa = 0;
-            switch(plazo) {
-                case 90: tasa = 0.045; break;
-                case 180: tasa = 0.052; break;
-                case 360: tasa = 0.060; break;
-                case 540: tasa = 0.065; break;
-            }
-            
-            // Calcular intereses
-            const intereses = monto * tasa * (plazo / 360);
-            const total = monto + intereses;
-            
-            // Mostrar resultados
-            document.getElementById('cdtMonto').textContent = formatCurrency(monto);
-            document.getElementById('cdtIntereses').textContent = formatCurrency(intereses);
-            document.getElementById('cdtTotal').textContent = formatCurrency(total);
-            document.getElementById('resultadoCDT').style.display = 'block';
-        });
-    }
-});
-
-// Simulador de Préstamo
-document.addEventListener('DOMContentLoaded', function() {
-    const formPrestamo = document.getElementById('formPrestamo');
-    
-    if (formPrestamo) {
-        formPrestamo.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const monto = parseFloat(document.getElementById('montoPrestamo').value);
-            const plazo = parseInt(document.getElementById('plazoPrestamo').value);
-            const tasaMensual = parseFloat(document.getElementById('tasaPrestamo').value) / 100;
-            
-            // Calcular cuota usando fórmula de amortización
-            const cuota = monto * (tasaMensual * Math.pow(1 + tasaMensual, plazo)) / (Math.pow(1 + tasaMensual, plazo) - 1);
-            const totalPagar = cuota * plazo;
-            const totalIntereses = totalPagar - monto;
-            
-            // Mostrar resultados
-            document.getElementById('prestamoQuota').textContent = formatCurrency(cuota);
-            document.getElementById('prestamoTotal').textContent = formatCurrency(totalPagar);
-            document.getElementById('prestamoIntereses').textContent = formatCurrency(totalIntereses);
-            document.getElementById('resultadoPrestamo').style.display = 'block';
-        });
-    }
-});
-
-// Simulador de Ahorro
-document.addEventListener('DOMContentLoaded', function() {
-    const formAhorro = document.getElementById('formAhorro');
-    
-    if (formAhorro) {
-        formAhorro.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const montoMensual = parseFloat(document.getElementById('montoAhorro').value);
-            const plazo = parseInt(document.getElementById('plazoAhorro').value);
-            const tasaAnual = parseFloat(document.getElementById('tasaAhorro').value) / 100;
-            const tasaMensual = tasaAnual / 12;
-            
-            // Calcular ahorro con interés compuesto
-            let totalAhorrado = montoMensual * plazo;
-            let totalConIntereses = 0;
-            
-            for (let i = 1; i <= plazo; i++) {
-                totalConIntereses += montoMensual * Math.pow(1 + tasaMensual, plazo - i + 1);
-            }
-            
-            const interesesGanados = totalConIntereses - totalAhorrado;
-            
-            // Mostrar resultados
-            document.getElementById('ahorroTotal').textContent = formatCurrency(totalAhorrado);
-            document.getElementById('ahorroIntereses').textContent = formatCurrency(interesesGanados);
-            document.getElementById('ahorroFinal').textContent = formatCurrency(totalConIntereses);
-            document.getElementById('resultadoAhorro').style.display = 'block';
-        });
-    }
-});
-
-// Función auxiliar para formatear moneda
-function formatCurrency(value) {
-    return new Intl.NumberFormat('es-CO', {
-        style: 'currency',
-        currency: 'COP',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-    }).format(value);
-}
-
-/* ========================================
-   PREGUNTAS FRECUENTES (FAQ)
-   ======================================== */
-
-document.addEventListener('DOMContentLoaded', function() {
-    const faqQuestions = document.querySelectorAll('.faq-question');
-    
-    faqQuestions.forEach(question => {
-        question.addEventListener('click', function() {
-            const faqItem = this.parentElement;
-            const isActive = faqItem.classList.contains('active');
-            
-            // Cerrar todas las preguntas
-            document.querySelectorAll('.faq-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            
-            // Abrir la pregunta clickeada si no estaba activa
-            if (!isActive) {
-                faqItem.classList.add('active');
-            }
-        });
-    });
-});
-
-/* ========================================
-   BANNER DE COOKIES
-   ======================================== */
-
-document.addEventListener('DOMContentLoaded', function() {
-    const cookieBanner = document.getElementById('cookieBanner');
-    const btnAceptarCookies = document.getElementById('btnAceptarCookies');
-    const btnPoliticaCookies = document.getElementById('btnPoliticaCookies');
-    
-    // Verificar si el usuario ya aceptó las cookies
-    const cookiesAceptadas = localStorage.getItem('cookiesAceptadas');
-    
-    if (cookiesAceptadas !== 'true') {
-        // Mostrar banner después de 2 segundos
-        setTimeout(function() {
-            cookieBanner.style.display = 'block';
-        }, 2000);
-    } else {
-        cookieBanner.classList.add('hidden');
-    }
-    
-    // Aceptar cookies
-    if (btnAceptarCookies) {
-        btnAceptarCookies.addEventListener('click', function() {
-            localStorage.setItem('cookiesAceptadas', 'true');
-            cookieBanner.classList.add('hidden');
-        });
-    }
-    
-    // Ver políticas
-    if (btnPoliticaCookies) {
-        btnPoliticaCookies.addEventListener('click', function() {
-            alert('Aquí se mostraría la política de cookies completa. En producción, esto abriría una página o modal con la información detallada.');
-        });
-    }
-});
-
-/* ========================================
-   FUNCIONES AUXILIARES
-   ======================================== */
-
-// Función para limpiar localStorage (útil para testing)
-function limpiarDatosLocales() {
-    localStorage.removeItem('introVisto');
-    localStorage.removeItem('alertaBancoCerrada');
-    localStorage.removeItem('cookiesAceptadas');
-    localStorage.removeItem('solicitudesApertura');
-    console.log('Datos locales limpiados');
-    location.reload();
-}
-
-// Hacer disponible globalmente para debugging
-window.limpiarDatosLocales = limpiarDatosLocales;
-
-// Función para ver todas las solicitudes de apertura
-function verTodasLasSolicitudes() {
-    const solicitudes = JSON.parse(localStorage.getItem('solicitudesApertura') || '[]');
-    if (solicitudes.length === 0) {
-        console.log('No hay solicitudes registradas');
-    } else {
-        console.log(`Total de solicitudes: ${solicitudes.length}`);
-        console.table(solicitudes);
-    }
-    return solicitudes;
-}
-
-window.verTodasLasSolicitudes = verTodasLasSolicitudes;
-
-/* ========================================
-   RECUPERACIÓN DE CONTRASEÑA
-   ======================================== */
-
-document.addEventListener('DOMContentLoaded', function() {
-    const btnOlvidastePassword = document.getElementById('btnOlvidastePassword');
-    const btnVolverLogin = document.getElementById('btnVolverLogin');
-    const loginForm = document.getElementById('loginForm');
-    const recuperarPasswordForm = document.getElementById('recuperarPasswordForm');
-    const loginTitle = document.getElementById('loginTitle');
-    
-    // Mostrar formulario de recuperación
-    if (btnOlvidastePassword) {
-        btnOlvidastePassword.addEventListener('click', function(e) {
-            e.preventDefault();
-            loginForm.style.display = 'none';
-            recuperarPasswordForm.style.display = 'block';
-            loginTitle.textContent = 'Recuperar Contraseña';
-        });
-    }
-    
-    // Volver al formulario de login
-    if (btnVolverLogin) {
-        btnVolverLogin.addEventListener('click', function(e) {
-            e.preventDefault();
-            recuperarPasswordForm.style.display = 'none';
-            loginForm.style.display = 'block';
-            loginTitle.textContent = 'Iniciar Sesión';
-        });
-    }
-    
-    // Procesar recuperación de contraseña
-    if (recuperarPasswordForm) {
-        recuperarPasswordForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('recuperarEmail').value;
-            
-            // Simulación de envío de código
-            alert(`Se ha enviado un código de recuperación a ${email}. Por favor revisa tu correo electrónico o mensajes de texto.`);
-            
-            // Volver al login
-            recuperarPasswordForm.style.display = 'none';
-            loginForm.style.display = 'block';
-            loginTitle.textContent = 'Iniciar Sesión';
-            recuperarPasswordForm.reset();
-        });
-    }
-});
-
-/* ========================================
-   MODALES DE ARTÍCULOS DEL BLOG
-   ======================================== */
-
-function abrirModalArticulo(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-}
-
-function cerrarModalArticulo(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.classList.remove('active');
-        document.body.style.overflow = 'auto';
-    }
-}
-
-// Cerrar modal al hacer clic fuera del contenido
-document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('modal-articulo')) {
-        e.target.classList.remove('active');
-        document.body.style.overflow = 'auto';
-    }
-});
-
-// Cerrar modal con tecla ESC
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        const modalesActivos = document.querySelectorAll('.modal-articulo.active');
-        modalesActivos.forEach(modal => {
-            modal.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        });
-    }
-});
-
-/* ========================================
-   VER MÁS ARTÍCULOS
-   ======================================== */
-
-document.addEventListener('DOMContentLoaded', function() {
-    const btnVerMasArticulos = document.getElementById('btnVerMasArticulos');
-    const articulosAdicionales = document.getElementById('articulosAdicionales');
-    
-    if (btnVerMasArticulos && articulosAdicionales) {
-        btnVerMasArticulos.addEventListener('click', function() {
-            if (articulosAdicionales.style.display === 'none') {
-                articulosAdicionales.style.display = 'grid';
-                btnVerMasArticulos.innerHTML = '<i class="fas fa-chevron-up"></i> Ver menos artículos';
-                
-                // Scroll suave hacia los artículos adicionales
-                setTimeout(() => {
-                    articulosAdicionales.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }, 100);
-            } else {
-                articulosAdicionales.style.display = 'none';
-                btnVerMasArticulos.innerHTML = '<i class="fas fa-book-open"></i> Ver más artículos';
-            }
-        });
-    }
-});
-
-/* ========================================
-   DESCARGAR TARIFARIO
-   ======================================== */
-
-document.addEventListener('DOMContentLoaded', function() {
-    const btnDescargarTarifas = document.getElementById('btnDescargarTarifas');
-    
-    if (btnDescargarTarifas) {
-        btnDescargarTarifas.addEventListener('click', function() {
-            // Crear un PDF simulado con información de tarifas
-            const tarifasInfo = `
-BANCO CÚCUTA EXPRESS
-TARIFARIO OFICIAL - Diciembre 2024
-
-═══════════════════════════════════════════════════════════
-
-CUENTAS DE AHORRO
-─────────────────────────────────────────────────────────
-Cuenta de Ahorros
-- Cuota de manejo: $0 primer año, $8.000 después
-- Tasa de interés: 4.5% EA
-- Comisiones: Sin comisiones
-
-Cuenta Semilla
-- Cuota de manejo: $0
-- Tasa de interés: 3.0% EA
-- Comisiones: Sin comisiones
-
-═══════════════════════════════════════════════════════════
-
-CDT DIGITAL
-─────────────────────────────────────────────────────────
-90 días: 4.5% EA
-180 días: 5.2% EA
-360 días: 6.0% EA
-540 días: 6.5% EA
-
-═══════════════════════════════════════════════════════════
-
-PRÉSTAMOS PERSONALES
-─────────────────────────────────────────────────────────
-Tasa de interés: 1.5% - 2.5% MV
-Comisión de estudio: 2% sobre monto
-Plazos: 12 a 60 meses
-
-═══════════════════════════════════════════════════════════
-
-TARJETA DÉBITO
-─────────────────────────────────────────────────────────
-Cuota de manejo: $0
-Retiros en cajeros BCE: $0
-Retiros en otros bancos: $2.500
-
-═══════════════════════════════════════════════════════════
-
-TRANSFERENCIAS
-─────────────────────────────────────────────────────────
-Entre cuentas BCE: $0
-A otros bancos: $3.500
-
-═══════════════════════════════════════════════════════════
-
-Nota: Las tarifas pueden variar según el perfil del cliente.
-Para más información: 018000-123456
-www.bancocucutaexpress.com
-            `;
-            
-            // Crear un blob con el contenido
-            const blob = new Blob([tarifasInfo], { type: 'text/plain' });
-            const url = window.URL.createObjectURL(blob);
-            
-            // Crear un enlace temporal y hacer clic en él
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'Tarifario_Banco_Cucuta_Express_2024.txt';
-            document.body.appendChild(a);
-            a.click();
-            
-            // Limpiar
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
-            
-            // Mostrar mensaje de confirmación
-            alert('¡Tarifario descargado exitosamente! Revisa tu carpeta de descargas.');
-        });
-    }
-});
-
-/* ========================================
-   CÓMO LLEGAR (GOOGLE MAPS)
-   ======================================== */
-
-document.addEventListener('DOMContentLoaded', function() {
-    const btnComoLlegar = document.getElementById('btnComoLlegar');
-    
-    if (btnComoLlegar) {
-        btnComoLlegar.addEventListener('click', function() {
-            // Coordenadas de Cúcuta, Colombia (ejemplo)
-            const lat = 7.8939;
-            const lng = -72.5047;
-            
-            // Abrir Google Maps en una nueva pestaña con las direcciones
-            const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=driving`;
-            window.open(googleMapsUrl, '_blank');
-        });
-    }
-});
-
-/* ========================================
-   SISTEMA DE TEMA CLARO/OSCURO
-   ======================================== */
-
-document.addEventListener('DOMContentLoaded', function() {
-    const themeToggle = document.getElementById('themeToggle');
-    const html = document.documentElement;
-    
-    // Verificar si hay un tema guardado en localStorage
-    const savedTheme = localStorage.getItem('theme');
-    
-    // Aplicar tema guardado o detectar preferencia del sistema
-    if (savedTheme) {
-        html.setAttribute('data-theme', savedTheme);
-        updateThemeIcon(savedTheme);
-    } else {
-        // Detectar preferencia del sistema
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const defaultTheme = prefersDark ? 'dark' : 'light';
-        html.setAttribute('data-theme', defaultTheme);
-        updateThemeIcon(defaultTheme);
-    }
-    
-    // Toggle de tema
-    if (themeToggle) {
-        themeToggle.addEventListener('click', function() {
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            // Aplicar nuevo tema
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeIcon(newTheme);
-            
-            // Animación del botón
-            this.style.transform = 'rotate(360deg)';
-            setTimeout(() => {
-                this.style.transform = 'rotate(0deg)';
-            }, 300);
-        });
-    }
-    
-    // Función para actualizar el icono del botón
-    function updateThemeIcon(theme) {
-        const icon = themeToggle.querySelector('i');
-        if (theme === 'dark') {
-            icon.classList.remove('fa-moon');
-            icon.classList.add('fa-sun');
-            themeToggle.setAttribute('aria-label', 'Cambiar a tema claro');
-        } else {
-            icon.classList.remove('fa-sun');
-            icon.classList.add('fa-moon');
-            themeToggle.setAttribute('aria-label', 'Cambiar a tema oscuro');
-        }
-    }
-    
-    // Escuchar cambios en la preferencia del sistema
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-        // Solo aplicar si no hay tema guardado manualmente
-        if (!localStorage.getItem('theme')) {
-            const newTheme = e.matches ? 'dark' : 'light';
-            html.setAttribute('data-theme', newTheme);
-            updateThemeIcon(newTheme);
-        }
-    });
-});
-
-/* ========================================
-   FUNCIÓN PARA RESETEAR TEMA (DEBUG)
-   ======================================== */
-
-function resetearTema() {
-    localStorage.removeItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const defaultTheme = prefersDark ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', defaultTheme);
-    console.log('Tema reseteado a:', defaultTheme);
-    location.reload();
-}
-
-// Hacer disponible globalmente para debugging
-window.resetearTema = resetearTema;
-
-/* ========================================
-   EFECTO DE SCROLL EN NAVBAR
-   ======================================== */
-
-document.addEventListener('DOMContentLoaded', function() {
-    const navbar = document.querySelector('.navbar');
-    let lastScroll = 0;
-    
-    window.addEventListener('scroll', function() {
-        const currentScroll = window.pageYOffset;
-        
-        // Agregar clase 'scrolled' cuando se hace scroll
-        if (currentScroll > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-        
-        lastScroll = currentScroll;
-    });
-});
-
-/* ========================================
-   ANIMACIÓN DE ENTRADA PARA ELEMENTOS
-   ======================================== */
-
-document.addEventListener('DOMContentLoaded', function() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-    
-    // Observar elementos que deben animarse
-    const animatedElements = document.querySelectorAll('.product-card, .service-card, .step-card, .branch-card, .testimonial-card, .feature-card, .blog-card, .simulator-card');
-    
-    animatedElements.forEach(element => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(30px)';
-        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(element);
-    });
-});
-
-/* ========================================
-   BOTÓN SCROLL TO TOP
-   ======================================== */
-
-document.addEventListener('DOMContentLoaded', function() {
-    const scrollToTopBtn = document.getElementById('scrollToTop');
-    
-    if (scrollToTopBtn) {
-        // Mostrar/ocultar botón según scroll
-        window.addEventListener('scroll', function() {
-            if (window.pageYOffset > 300) {
-                scrollToTopBtn.classList.add('visible');
-            } else {
-                scrollToTopBtn.classList.remove('visible');
-            }
-        });
-        
-        // Scroll suave al hacer clic
-        scrollToTopBtn.addEventListener('click', function() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-    }
-});
-
-/* ========================================
-   MEJORAR ANIMACIONES DE ENTRADA
-   ======================================== */
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Agregar clase de animación a elementos cuando entran en viewport
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-    };
-    
-    const fadeInObserver = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in-up');
-                fadeInObserver.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-    
-    // Observar secciones
-    const sections = document.querySelectorAll('section');
     sections.forEach(section => {
-        fadeInObserver.observe(section);
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (pageYOffset >= sectionTop - 100) {
+            current = section.getAttribute('id');
+        }
+    });
+    
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+            link.classList.add('active');
+        }
     });
 });
 
-/* ========================================
-   EFECTO DE TYPING EN HERO
-   ======================================== */
-
-document.addEventListener('DOMContentLoaded', function() {
-    const heroDescription = document.querySelector('.hero-description');
-    
-    if (heroDescription) {
-        const text = heroDescription.textContent;
-        heroDescription.textContent = '';
-        heroDescription.style.opacity = '1';
-        
-        let index = 0;
-        const typingSpeed = 50;
-        
-        function typeText() {
-            if (index < text.length) {
-                heroDescription.textContent += text.charAt(index);
-                index++;
-                setTimeout(typeText, typingSpeed);
-            }
-        }
-        
-        // Iniciar después de 1 segundo
-        setTimeout(typeText, 1000);
+// ============================================
+// NOTIFICATION SYSTEM
+// ============================================
+function showNotification(message, type = 'success') {
+    const existingNotification = document.querySelector('.notification');
+    if (existingNotification) {
+        existingNotification.remove();
     }
-});
-
-/* ========================================
-   CONTADOR ANIMADO PARA NÚMEROS
-   ======================================== */
-
-function animateCounter(element, target, duration = 2000) {
-    let start = 0;
-    const increment = target / (duration / 16);
     
-    const timer = setInterval(() => {
-        start += increment;
-        if (start >= target) {
-            element.textContent = Math.round(target).toLocaleString('es-CO');
-            clearInterval(timer);
-        } else {
-            element.textContent = Math.round(start).toLocaleString('es-CO');
-        }
-    }, 16);
-}
-
-/* ========================================
-   EFECTO PARALLAX SUAVE
-   ======================================== */
-
-document.addEventListener('DOMContentLoaded', function() {
-    window.addEventListener('scroll', function() {
-        const scrolled = window.pageYOffset;
-        const parallaxElements = document.querySelectorAll('.hero-image, .hero-content');
-        
-        parallaxElements.forEach(element => {
-            const speed = element.classList.contains('hero-image') ? 0.3 : 0.15;
-            element.style.transform = `translateY(${scrolled * speed}px)`;
-        });
-    });
-});
-
-/* ========================================
-   MEJORAR INTERACCIÓN DE FORMULARIOS
-   ======================================== */
-
-document.addEventListener('DOMContentLoaded', function() {
-    const inputs = document.querySelectorAll('input, textarea, select');
-    
-    inputs.forEach(input => {
-        // Agregar efecto de focus
-        input.addEventListener('focus', function() {
-            this.parentElement.classList.add('input-focused');
-        });
-        
-        input.addEventListener('blur', function() {
-            this.parentElement.classList.remove('input-focused');
-        });
-        
-        // Agregar efecto de filled
-        input.addEventListener('input', function() {
-            if (this.value) {
-                this.classList.add('input-filled');
-            } else {
-                this.classList.remove('input-filled');
-            }
-        });
-    });
-});
-
-/* ========================================
-   NOTIFICACIONES TOAST
-   ======================================== */
-
-function showToast(message, type = 'success') {
-    const toast = document.createElement('div');
-    toast.className = `toast toast-${type}`;
-    toast.innerHTML = `
-        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
-        <span>${message}</span>
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                ${type === 'success' 
+                    ? '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>'
+                    : '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>'
+                }
+            </svg>
+            <span>${message}</span>
+        </div>
     `;
     
-    document.body.appendChild(toast);
+    const style = document.createElement('style');
+    style.textContent = `
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 24px;
+            background: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            z-index: 10000;
+            animation: slideInNotif 0.3s ease;
+        }
+        
+        .notification-success {
+            border-left: 4px solid #00B894;
+        }
+        
+        .notification-error {
+            border-left: 4px solid #ef4444;
+        }
+        
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .notification-success svg {
+            color: #00B894;
+        }
+        
+        .notification-error svg {
+            color: #ef4444;
+        }
+        
+        .notification span {
+            color: #111827;
+            font-weight: 500;
+            font-size: 15px;
+        }
+        
+        @keyframes slideInNotif {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOutNotif {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .notification {
+                right: 16px;
+                left: 16px;
+                top: 80px;
+            }
+        }
+    `;
+    
+    if (!document.querySelector('style[data-notification]')) {
+        style.setAttribute('data-notification', 'true');
+        document.head.appendChild(style);
+    }
+    
+    document.body.appendChild(notification);
     
     setTimeout(() => {
-        toast.classList.add('show');
-    }, 100);
-    
-    setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => {
-            document.body.removeChild(toast);
-        }, 300);
-    }, 3000);
+        notification.style.animation = 'slideOutNotif 0.3s ease';
+        setTimeout(() => notification.remove(), 300);
+    }, 4000);
 }
 
-// Hacer disponible globalmente
-window.showToast = showToast;
-
-/* ========================================
-   MEJORAR EXPERIENCIA DE CARGA
-   ======================================== */
-
-window.addEventListener('load', function() {
-    document.body.classList.add('loaded');
+// ============================================
+// PARALLAX EFFECT
+// ============================================
+window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const heroCards = document.querySelectorAll('.hero-card');
     
-    // Ocultar cualquier loader si existe
-    const loader = document.querySelector('.loader');
-    if (loader) {
-        loader.style.opacity = '0';
+    heroCards.forEach((card, index) => {
+        const speed = 0.5 + (index * 0.2);
+        if (scrolled < 800) {
+            card.style.transform = `translateY(${scrolled * speed}px)`;
+        }
+    });
+});
+
+console.log('🏦 Banco Cúcuta Express - Sistema cargado correctamente');
+console.log('✅ Modales funcionales');
+console.log('✅ Formularios validados');
+console.log('✅ Animaciones activas');
+
+
+// ============================================
+// DASHBOARD FUNCTIONALITY
+// ============================================
+
+// Show dashboard after successful login
+function showDashboard() {
+    const dashboardSection = document.getElementById('dashboard');
+    const loginSection = document.getElementById('ingresar');
+    
+    if (dashboardSection && loginSection) {
+        // Hide login section
+        loginSection.style.display = 'none';
+        
+        // Show dashboard
+        dashboardSection.style.display = 'block';
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // Initialize charts
         setTimeout(() => {
-            loader.style.display = 'none';
+            initializeCharts();
         }, 300);
     }
-});
+}
 
-/* ========================================
-   DETECTAR NAVEGACIÓN ACTIVA
-   ======================================== */
-
-document.addEventListener('DOMContentLoaded', function() {
-    const navLinks = document.querySelectorAll('.nav-link');
-    const sections = document.querySelectorAll('section[id]');
-    
-    function highlightNavigation() {
-        const scrollY = window.pageYOffset;
+// Logout functionality
+const logoutBtn = document.getElementById('logout-btn');
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
         
-        sections.forEach(section => {
-            const sectionHeight = section.offsetHeight;
-            const sectionTop = section.offsetTop - 100;
-            const sectionId = section.getAttribute('id');
+        const dashboardSection = document.getElementById('dashboard');
+        const loginSection = document.getElementById('ingresar');
+        
+        if (dashboardSection && loginSection) {
+            dashboardSection.style.display = 'none';
+            loginSection.style.display = 'block';
             
-            if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-                navLinks.forEach(link => {
-                    link.parentElement.classList.remove('active');
-                    if (link.getAttribute('href') === `#${sectionId}`) {
-                        link.parentElement.classList.add('active');
-                    }
-                });
-            }
-        });
-    }
-    
-    window.addEventListener('scroll', highlightNavigation);
-});
-
-/* ========================================
-   COPIAR AL PORTAPAPELES
-   ======================================== */
-
-function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(() => {
-        showToast('Copiado al portapapeles', 'success');
-    }).catch(() => {
-        showToast('Error al copiar', 'error');
+            showNotification('Sesión cerrada correctamente', 'success');
+            
+            // Scroll to login section
+            loginSection.scrollIntoView({ behavior: 'smooth' });
+        }
     });
 }
 
-window.copyToClipboard = copyToClipboard;
-
-/* ========================================
-   PREVENIR ZOOM EN INPUTS EN MÓVILES
-   ======================================== */
-
-document.addEventListener('DOMContentLoaded', function() {
-    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        const inputs = document.querySelectorAll('input, select, textarea');
-        inputs.forEach(input => {
-            input.addEventListener('focus', function() {
-                this.style.fontSize = '16px';
-            });
+// Initialize Charts
+function initializeCharts() {
+    // Finances Chart (Line Chart)
+    const financesCanvas = document.getElementById('financesChart');
+    if (financesCanvas) {
+        const ctx = financesCanvas.getContext('2d');
+        
+        // Simple line chart implementation
+        const width = financesCanvas.width = financesCanvas.offsetWidth;
+        const height = financesCanvas.height = 200;
+        
+        // Sample data
+        const incomeData = [1200, 1900, 1500, 2200, 1800, 2400, 2100, 2800, 2300, 2600];
+        const outcomeData = [800, 1200, 1000, 1400, 1100, 1600, 1300, 1800, 1500, 1700];
+        
+        // Draw grid
+        ctx.strokeStyle = '#E2E8F0';
+        ctx.lineWidth = 1;
+        for (let i = 0; i <= 5; i++) {
+            const y = (height / 5) * i;
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(width, y);
+            ctx.stroke();
+        }
+        
+        // Draw income line
+        ctx.strokeStyle = '#3B82F6';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        incomeData.forEach((value, index) => {
+            const x = (width / (incomeData.length - 1)) * index;
+            const y = height - (value / 3000) * height;
+            if (index === 0) {
+                ctx.moveTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+            }
         });
+        ctx.stroke();
+        
+        // Draw outcome line
+        ctx.strokeStyle = '#EF4444';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        outcomeData.forEach((value, index) => {
+            const x = (width / (outcomeData.length - 1)) * index;
+            const y = height - (value / 3000) * height;
+            if (index === 0) {
+                ctx.moveTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+            }
+        });
+        ctx.stroke();
     }
+    
+    // Expenses Chart (Donut Chart)
+    const expensesCanvas = document.getElementById('expensesChart');
+    if (expensesCanvas) {
+        const ctx = expensesCanvas.getContext('2d');
+        const width = expensesCanvas.width = expensesCanvas.offsetWidth;
+        const height = expensesCanvas.height = 200;
+        
+        const centerX = width / 2;
+        const centerY = height / 2;
+        const radius = Math.min(width, height) / 2 - 20;
+        const innerRadius = radius * 0.6;
+        
+        // Data
+        const data = [
+            { label: 'Shopping', value: 35, color: '#3B82F6' },
+            { label: 'Workspace', value: 25, color: '#8B5CF6' },
+            { label: 'Food', value: 20, color: '#EC4899' },
+            { label: 'Entertainment', value: 20, color: '#F59E0B' }
+        ];
+        
+        let currentAngle = -Math.PI / 2;
+        
+        data.forEach(item => {
+            const sliceAngle = (item.value / 100) * 2 * Math.PI;
+            
+            // Draw outer arc
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
+            ctx.arc(centerX, centerY, innerRadius, currentAngle + sliceAngle, currentAngle, true);
+            ctx.closePath();
+            ctx.fillStyle = item.color;
+            ctx.fill();
+            
+            currentAngle += sliceAngle;
+        });
+        
+        // Draw center circle
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, innerRadius, 0, 2 * Math.PI);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fill();
+    }
+}
+
+// Update login form to show dashboard
+const loginFormMainDash = document.querySelector('.login-form-main');
+if (loginFormMainDash) {
+    loginFormMainDash.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const docType = loginFormMainDash.querySelector('select').value;
+        const docNumber = loginFormMainDash.querySelectorAll('input[type="text"]')[0].value;
+        const password = loginFormMainDash.querySelector('input[type="password"]').value;
+        
+        if (!docType || !docNumber || !password) {
+            showNotification('Por favor completa todos los campos', 'error');
+            return;
+        }
+        
+        // Simulate login
+        showNotification('Iniciando sesión...', 'success');
+        
+        setTimeout(() => {
+            showNotification('¡Bienvenido a tu dashboard!', 'success');
+            loginFormMainDash.reset();
+            
+            // Show dashboard
+            showDashboard();
+        }, 1500);
+    });
+}
+
+console.log('🎨 Dashboard cargado correctamente');
+
+// ============================================
+// DARK/LIGHT THEME SYSTEM
+// ============================================
+
+// Theme management
+const themeToggle = document.getElementById('theme-toggle');
+const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+// Get saved theme or use system preference
+function getTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        return savedTheme;
+    }
+    return prefersDarkScheme.matches ? 'dark' : 'light';
+}
+
+// Apply theme
+function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    
+    // Update VAPI widget theme if it exists
+    const vapiWidget = document.querySelector('vapi-widget');
+    if (vapiWidget) {
+        vapiWidget.setAttribute('theme', theme);
+        vapiWidget.setAttribute('base-bg-color', theme === 'dark' ? '#1E293B' : '#FFFFFF');
+        vapiWidget.setAttribute('accent-color', '#14B8A6');
+        vapiWidget.setAttribute('cta-button-color', theme === 'dark' ? '#14B8A6' : '#000000');
+        vapiWidget.setAttribute('cta-button-text-color', theme === 'dark' ? '#0F172A' : '#FFFFFF');
+    }
+    
+    // Update navbar immediately if scrolled
+    if (window.pageYOffset > 0) {
+        updateNavbarOnScroll();
+    }
+    
+    // Update any existing notifications
+    const existingNotificationStyle = document.querySelector('style[data-notification]');
+    if (existingNotificationStyle) {
+        existingNotificationStyle.remove();
+    }
+}
+
+// Toggle theme
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    applyTheme(newTheme);
+    
+    // Add a subtle animation feedback
+    themeToggle.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+        themeToggle.style.transform = 'scale(1)';
+    }, 150);
+    
+    // Show notification
+    showNotification(
+        `Tema ${newTheme === 'dark' ? 'oscuro' : 'claro'} activado`, 
+        'success'
+    );
+}
+
+// Initialize theme
+document.addEventListener('DOMContentLoaded', () => {
+    const initialTheme = getTheme();
+    applyTheme(initialTheme);
+    
+    // Add theme toggle event listener
+    if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+    }
+    
+    // Listen for system theme changes
+    prefersDarkScheme.addEventListener('change', (e) => {
+        if (!localStorage.getItem('theme')) {
+            applyTheme(e.matches ? 'dark' : 'light');
+        }
+    });
 });
+
+// Update existing functions to work with themes
+showNotification = function(message, type = 'success') {
+    const existingNotification = document.querySelector('.notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
+    
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                ${type === 'success' 
+                    ? '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>'
+                    : '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>'
+                }
+            </svg>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    
+    const style = document.createElement('style');
+    style.textContent = `
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 24px;
+            background: ${currentTheme === 'dark' ? '#1E293B' : '#FFFFFF'};
+            color: ${currentTheme === 'dark' ? '#FFFFFF' : '#111827'};
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, ${currentTheme === 'dark' ? '0.6' : '0.15'});
+            z-index: 10000;
+            animation: slideInNotif 0.3s ease;
+            border: 1px solid ${currentTheme === 'dark' ? '#334155' : '#E5E7EB'};
+        }
+        
+        .notification-success {
+            border-left: 4px solid #10B981;
+        }
+        
+        .notification-error {
+            border-left: 4px solid #EF4444;
+        }
+        
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .notification-success svg {
+            color: #10B981;
+        }
+        
+        .notification-error svg {
+            color: #EF4444;
+        }
+        
+        .notification span {
+            font-weight: 500;
+            font-size: 15px;
+            color: ${currentTheme === 'dark' ? '#FFFFFF' : '#111827'};
+        }
+        
+        @keyframes slideInNotif {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOutNotif {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .notification {
+                right: 16px;
+                left: 16px;
+                top: 80px;
+            }
+        }
+    `;
+    
+    if (!document.querySelector('style[data-notification]')) {
+        style.setAttribute('data-notification', 'true');
+        document.head.appendChild(style);
+    } else {
+        document.querySelector('style[data-notification]').textContent = style.textContent;
+    }
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideOutNotif 0.3s ease';
+        setTimeout(() => notification.remove(), 300);
+    }, 4000);
+};
+
+// Theme-aware scroll effects - Update the existing scroll listener
+function updateNavbarOnScroll() {
+    const currentScroll = window.pageYOffset;
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    
+    if (currentScroll > 50) {
+        navbar.style.boxShadow = currentTheme === 'dark' 
+            ? '0 4px 6px -1px rgba(0, 0, 0, 0.6)' 
+            : '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+        navbar.style.background = currentTheme === 'dark' 
+            ? 'rgba(30, 41, 59, 0.98)' 
+            : 'rgba(255, 255, 255, 0.98)';
+        navbar.style.backdropFilter = 'blur(10px)';
+    } else {
+        navbar.style.boxShadow = currentTheme === 'dark' 
+            ? '0 1px 2px 0 rgba(0, 0, 0, 0.5)' 
+            : '0 1px 2px 0 rgba(0, 0, 0, 0.05)';
+        navbar.style.background = currentTheme === 'dark' 
+            ? 'rgba(30, 41, 59, 0.95)' 
+            : '#ffffff';
+        navbar.style.backdropFilter = 'none';
+    }
+    
+    lastScroll = currentScroll;
+}
+
+// Replace the existing scroll listener
+window.removeEventListener('scroll', updateNavbarOnScroll);
+window.addEventListener('scroll', updateNavbarOnScroll);
+
+console.log('🌙 Sistema de tema claro/oscuro activado');
